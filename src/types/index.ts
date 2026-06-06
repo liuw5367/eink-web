@@ -11,16 +11,18 @@ export interface AppConfig {
   weather: boolean;
   todo: boolean;
   quote: boolean;
-  fontSize: 'sm' | 'md' | 'lg';
+  fontSize: "sm" | "md" | "lg";
   city: string;
   apiKey: string;
-  wpSrc: 'bing' | 'local' | 'pattern';
+  wpSrc: "bing" | "local" | "pattern";
   keepOn: boolean;
   fullscreen: boolean;
-  orient: 'portrait' | 'landscape' | 'auto';
+  orient: "portrait" | "landscape" | "auto";
 }
 
-export type Mode = 'clock' | 'info' | 'banke' | 'chenbao' | 'wallpaper';
+export type Mode =
+  // | 'clock' | 'info'| 'wallpaper'
+  "banke" | "chenbao";
 
 export interface AndroidBridge {
   getBatteryLevel: () => number;

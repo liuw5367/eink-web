@@ -1,25 +1,26 @@
-import { useState, useEffect, useRef } from 'react';
-import { useConfigStore } from '../hooks/useConfig';
-import { useClock, zp } from '../hooks/useClock';
-import type { Mode } from '../types';
+import { useState, useEffect, useRef } from "react";
+import { useConfigStore } from "../hooks/useConfig";
+import { useClock, zp } from "../hooks/useClock";
+import type { Mode } from "../types";
 
 export const MODE_NAMES: Record<Mode, string> = {
-  clock: '时钟',
-  info: '资讯',
-  wallpaper: '壁纸',
-  banke: '版刻',
-  chenbao: '晨报',
+  // clock: '时钟',
+  // info: '资讯',
+  // wallpaper: '壁纸',
+  banke: "版刻",
+  chenbao: "晨报",
 };
 
 const MODE_ICONS: Record<Mode, string> = {
-  clock: '🕐',
-  info: '📰',
-  banke: '⬛',
-  chenbao: '📰',
-  wallpaper: '🖼',
+  // clock: '🕐',
+  // info: '📰',
+  // wallpaper: '🖼',
+  banke: "⬛",
+  chenbao: "📰",
 };
 
-const ALL_MODES: Mode[] = ['clock', 'info', 'banke', 'chenbao', 'wallpaper'];
+// const ALL_MODES: Mode[] = ["banke", "chenbao", "clock", "info", "wallpaper"];
+const ALL_MODES: Mode[] = ["banke", "chenbao"];
 
 export function BottomNav() {
   const cfg = useConfigStore((s) => s.cfg);
@@ -27,8 +28,8 @@ export function BottomNav() {
   const setSettingsOpen = useConfigStore((s) => s.setSettingsOpen);
   const { time } = useClock();
   const [modePickerOpen, setModePickerOpen] = useState(false);
-  const [battery, setBattery] = useState('--');
-  const [countdown, setCountdown] = useState('');
+  const [battery, setBattery] = useState("--");
+  const [countdown, setCountdown] = useState("");
   const pickerRef = useRef<HTMLDivElement>(null);
 
   // Battery
@@ -50,7 +51,7 @@ export function BottomNav() {
   // Refresh countdown
   useEffect(() => {
     if (cfg.interval === 0) {
-      setCountdown('手动');
+      setCountdown("手动");
       return;
     }
     let remaining = cfg.interval * 60;
@@ -74,8 +75,8 @@ export function BottomNav() {
         setModePickerOpen(false);
       }
     };
-    document.addEventListener('mousedown', handler);
-    return () => document.removeEventListener('mousedown', handler);
+    document.addEventListener("mousedown", handler);
+    return () => document.removeEventListener("mousedown", handler);
   }, [modePickerOpen]);
 
   const handleModeSelect = (mode: Mode) => {
@@ -113,7 +114,9 @@ export function BottomNav() {
                 <button
                   key={mode}
                   className={`w-full flex items-center gap-2 px-3 py-2.5 text-left text-[13px] font-bold cursor-pointer border-b border-gray-200 last:border-0 ${
-                    cfg.mode === mode ? 'bg-black text-white' : 'hover:bg-gray-100'
+                    cfg.mode === mode
+                      ? "bg-black text-white"
+                      : "hover:bg-gray-100"
                   }`}
                   onClick={() => handleModeSelect(mode)}
                 >
