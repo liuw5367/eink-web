@@ -84,7 +84,7 @@ export function BottomNav() {
   };
 
   return (
-    <nav className="flex items-center justify-between border-t-2 border-black flex-shrink-0 h-[42px] px-3 bg-white font-mono text-[10px] relative">
+    <nav className="flex items-center justify-between border-t-2 border-black flex-shrink-0 h-[50px] px-3 bg-white font-mono text-[12px] relative">
       {/* Left: battery · time · countdown */}
       <div className="flex items-center gap-2">
         <span>🔋 {battery}%</span>
@@ -99,7 +99,7 @@ export function BottomNav() {
         {/* Mode picker */}
         <div className="relative" ref={pickerRef}>
           <button
-            className="cursor-pointer text-[16px] leading-none p-1"
+            className="cursor-pointer text-[20px] leading-none p-1"
             onClick={() => setModePickerOpen(!modePickerOpen)}
             title="切换模式"
           >
@@ -108,16 +108,16 @@ export function BottomNav() {
 
           {/* Floating popup */}
           {modePickerOpen && (
-            <div className="absolute bottom-full right-0 mb-2 bg-white border-2 border-black shadow-[4px_4px_0_#000] z-50 min-w-[120px]">
+            <div className="absolute bottom-full right-0 mb-2 bg-white border-2 border-black shadow-[4px_4px_0_#000] z-50 min-w-[140px]">
               {ALL_MODES.map((mode) => (
                 <button
                   key={mode}
-                  className={`w-full flex items-center gap-2 px-3 py-2 text-left text-[11px] font-bold cursor-pointer border-b border-gray-200 last:border-0 ${
+                  className={`w-full flex items-center gap-2 px-3 py-2.5 text-left text-[13px] font-bold cursor-pointer border-b border-gray-200 last:border-0 ${
                     cfg.mode === mode ? 'bg-black text-white' : 'hover:bg-gray-100'
                   }`}
                   onClick={() => handleModeSelect(mode)}
                 >
-                  <span className="text-[14px]">{MODE_ICONS[mode]}</span>
+                  <span className="text-[16px]">{MODE_ICONS[mode]}</span>
                   <span>{MODE_NAMES[mode]}</span>
                 </button>
               ))}
@@ -127,7 +127,7 @@ export function BottomNav() {
 
         {/* Settings */}
         <button
-          className="cursor-pointer text-[16px] leading-none p-1"
+          className="cursor-pointer text-[20px] leading-none p-1"
           onClick={() => setSettingsOpen(true)}
           title="设置"
         >

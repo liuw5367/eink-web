@@ -26,7 +26,7 @@ function App() {
 
   // Font size
   useEffect(() => {
-    const map = { sm: '14px', md: '16px', lg: '19px' };
+    const map = { sm: '18px', md: '20px', lg: '24px' };
     document.documentElement.style.fontSize = map[cfg.fontSize] || '16px';
   }, [cfg.fontSize]);
 

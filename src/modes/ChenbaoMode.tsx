@@ -98,15 +98,15 @@ export function ChenbaoMode() {
           {zp(day)}
         </div>
         <div className="flex items-center gap-2.5 mt-2 pt-2 border-t-2 border-black">
-          <span className="text-[14px] font-bold tracking-widest">
+          <span className="text-[18px] font-bold tracking-widest">
             {WD_FULL[now.getDay()]}
           </span>
-          <span className="text-[11px] tracking-wide" style={{ color: 'var(--gray)' }}>
+          <span className="text-[13px] tracking-wide" style={{ color: 'var(--gray)' }}>
             农历 {lunar.full}
             {lunar.festivals.length > 0 && ` · ${lunar.festivals.join(' ')}`}
           </span>
         </div>
-        <div className="font-mono text-[48px] font-normal tracking-tight mt-2.5">{time}</div>
+        <div className="font-mono text-[52px] font-normal tracking-tight mt-2.5">{time}</div>
 
         {/* Mini calendar */}
         <div className="mt-3.5 flex-1">
@@ -114,7 +114,7 @@ export function ChenbaoMode() {
             {WD_HEADERS.map((h, i) => (
               <div
                 key={i}
-                className="text-center text-[9px] font-bold"
+                className="text-center text-[11px] font-bold"
                 style={{ color: 'var(--gray)' }}
               >
                 {h}
@@ -128,9 +128,9 @@ export function ChenbaoMode() {
                 className="text-center py-1 flex flex-col items-center"
               >
                 <span
-                  className={`font-mono text-[12px] font-semibold ${
+                  className={`font-mono text-[14px] font-semibold ${
                     cell.isToday
-                      ? 'bg-black text-white w-[22px] h-[22px] rounded-full flex items-center justify-center font-bold'
+                      ? 'bg-black text-white w-[26px] h-[26px] rounded-full flex items-center justify-center font-bold'
                       : cell.other
                         ? 'text-gray-400'
                         : ''
@@ -141,7 +141,7 @@ export function ChenbaoMode() {
                 >
                   {cell.day}
                 </span>
-                <span className="text-[7px] mt-px" style={{ color: 'var(--light-gray)' }}>
+                <span className="text-[8px] mt-px" style={{ color: 'var(--light-gray)' }}>
                   {cell.lunarStr}
                 </span>
               </div>
@@ -155,20 +155,20 @@ export function ChenbaoMode() {
         {/* Weather */}
         <div className="py-2.5 border-b border-gray-200">
           <div
-            className="text-[8px] font-black tracking-widest uppercase mb-1.5"
+            className="text-[10px] font-black tracking-widest uppercase mb-1.5"
             style={{ color: 'var(--gray)' }}
           >
             天气
           </div>
           <div className="flex items-end gap-1.5 mb-1">
-            <span className="text-[24px] leading-none">
+            <span className="text-[28px] leading-none">
               {w ? weatherIcon(w.icon) : '⛅'}
             </span>
-            <span className="font-mono text-[36px] font-bold leading-none">
+            <span className="font-mono text-[40px] font-bold leading-none">
               {w?.temp ?? '--'}°
             </span>
           </div>
-          <div className="text-[10px] leading-relaxed" style={{ color: 'var(--gray)' }}>
+          <div className="text-[11px] leading-relaxed" style={{ color: 'var(--gray)' }}>
             {w && `体感 ${w.feelsLike}°`}
             {today && `  ${today.tempMax}°/${today.tempMin}°`}
             <br />
@@ -184,7 +184,7 @@ export function ChenbaoMode() {
         {/* Hourly Forecast */}
         <div className="py-2.5 border-b border-gray-200">
           <div
-            className="text-[8px] font-black tracking-widest uppercase mb-1.5"
+            className="text-[10px] font-black tracking-widest uppercase mb-1.5"
             style={{ color: 'var(--gray)' }}
           >
             小时预报
@@ -192,19 +192,19 @@ export function ChenbaoMode() {
           <div className="flex flex-col gap-1">
             {hourlyForecast.length > 0
               ? hourlyForecast.map((h, i) => (
-                  <div key={i} className="flex justify-between items-center text-[10px]">
+                  <div key={i} className="flex justify-between items-center text-[11px]">
                     <span className="font-bold tracking-wide" style={{ color: 'var(--gray)' }}>
                       {h.time}
                     </span>
-                    <span className="text-[12px]">{h.icon}</span>
-                    <span className="font-mono text-[9px]">{h.temp}</span>
+                    <span className="text-[14px]">{h.icon}</span>
+                    <span className="font-mono text-[11px]">{h.temp}</span>
                   </div>
                 ))
               : [1, 2, 3].map((i) => (
-                  <div key={i} className="flex justify-between items-center text-[10px]">
+                  <div key={i} className="flex justify-between items-center text-[11px]">
                     <span className="font-bold" style={{ color: 'var(--gray)' }}>—</span>
                     <span>❓</span>
-                    <span className="font-mono text-[9px]">--°</span>
+                    <span className="font-mono text-[11px]">--°</span>
                   </div>
                 ))}
           </div>
@@ -213,7 +213,7 @@ export function ChenbaoMode() {
         {/* Forecast */}
         <div className="py-2.5 border-b border-gray-200">
           <div
-            className="text-[8px] font-black tracking-widest uppercase mb-1.5"
+            className="text-[10px] font-black tracking-widest uppercase mb-1.5"
             style={{ color: 'var(--gray)' }}
           >
             未来预报
@@ -221,19 +221,19 @@ export function ChenbaoMode() {
           <div className="flex flex-col gap-1">
             {forecast.length > 0
               ? forecast.map((f, i) => (
-                  <div key={i} className="flex justify-between items-center text-[10px]">
+                  <div key={i} className="flex justify-between items-center text-[11px]">
                     <span className="font-bold tracking-wide" style={{ color: 'var(--gray)' }}>
                       {f.day}
                     </span>
-                    <span className="text-[12px]">{f.icon}</span>
-                    <span className="font-mono text-[9px]">{f.temp}</span>
+                    <span className="text-[14px]">{f.icon}</span>
+                    <span className="font-mono text-[11px]">{f.temp}</span>
                   </div>
                 ))
               : [1, 2, 3].map((i) => (
-                  <div key={i} className="flex justify-between items-center text-[10px]">
+                  <div key={i} className="flex justify-between items-center text-[11px]">
                     <span className="font-bold" style={{ color: 'var(--gray)' }}>—</span>
                     <span>❓</span>
-                    <span className="font-mono text-[9px]">--/--</span>
+                    <span className="font-mono text-[11px]">--/--</span>
                   </div>
                 ))}
           </div>
@@ -242,7 +242,7 @@ export function ChenbaoMode() {
         {/* Events */}
         <div className="py-2.5">
           <div
-            className="text-[8px] font-black tracking-widest uppercase mb-1.5"
+            className="text-[10px] font-black tracking-widest uppercase mb-1.5"
             style={{ color: 'var(--gray)' }}
           >
             日程
@@ -251,7 +251,7 @@ export function ChenbaoMode() {
             <div className="flex gap-1.5 items-start">
               <div className="w-1.5 h-1.5 bg-black rounded-full mt-1 flex-shrink-0" />
               <div>
-                <div className="text-[11px] tracking-wide">暂无日程</div>
+                <div className="text-[13px] tracking-wide">暂无日程</div>
               </div>
             </div>
           </div>

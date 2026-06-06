@@ -14,8 +14,8 @@ export function NightOverlay() {
       onClick={() => setNightActive(false)}
     >
       <div className="night-time">{time}</div>
-      <div className="text-[13px] text-[#555] tracking-widest">{shortDate}</div>
-      <div className="text-[10px] text-[#333] tracking-[1.5px] mt-5">
+      <div className="text-[15px] text-[#555] tracking-widest">{shortDate}</div>
+      <div className="text-[12px] text-[#333] tracking-[1.5px] mt-5">
         点击任意位置退出夜间模式
       </div>
     </div>

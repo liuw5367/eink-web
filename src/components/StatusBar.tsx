@@ -7,7 +7,7 @@ export function StatusBar() {
   const cfg = useConfigStore((s) => s.cfg);
 
   return (
-    <div className="flex items-center justify-between px-3 py-[5px] border-b-2 border-black bg-black text-white font-mono text-[10px] flex-shrink-0 h-7">
+    <div className="flex items-center justify-between px-3 py-[5px] border-b-2 border-black bg-black text-white font-mono text-[12px] flex-shrink-0 h-8">
       <div className="flex items-center gap-2">
         <span>{MODE_NAMES[cfg.mode]}</span>
         <span className="opacity-40">│</span>

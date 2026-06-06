@@ -43,24 +43,24 @@ export function InfoMode() {
       <div className="px-3.5 py-3 border-b-2 border-black flex justify-between items-start flex-shrink-0">
         <div>
           <div
-            className="text-[11px] font-bold tracking-wide mb-1"
+            className="text-[13px] font-bold tracking-wide mb-1"
             style={{ color: 'var(--gray)' }}
           >
             📍 {cfg.city}市
           </div>
-          <div className="font-mono text-[52px] font-black leading-none">
+          <div className="font-mono text-[56px] font-black leading-none">
             {w?.temp ?? '--'}°C
           </div>
-          <div className="text-[12px] mt-0.5">{w?.text ?? '加载中…'}</div>
-          <div className="font-mono text-[11px] mt-1" style={{ color: 'var(--gray)' }}>
+          <div className="text-[14px] mt-0.5">{w?.text ?? '加载中…'}</div>
+          <div className="font-mono text-[13px] mt-1" style={{ color: 'var(--gray)' }}>
             {w && `湿度 ${w.humidity}% · ${w.windDir} ${w.windScale}级`}
             {air && ` · AQI ${air.aqi} ${air.category}`}
           </div>
         </div>
         <div className="text-center">
-          <span className="text-[40px] block">{w ? weatherIcon(w.icon) : '⛅'}</span>
+          <span className="text-[44px] block">{w ? weatherIcon(w.icon) : '⛅'}</span>
           {today && (
-            <div className="font-mono text-[11px] mt-1">
+            <div className="font-mono text-[13px] mt-1">
               H:{today.tempMax} L:{today.tempMin}
             </div>
           )}
@@ -70,7 +70,7 @@ export function InfoMode() {
       {/* Sunrise/sunset + UV + precip */}
       {today && (
         <div
-          className="flex gap-2.5 px-3.5 py-1.5 text-[10px] border-b-2 border-black flex-wrap flex-shrink-0"
+          className="flex gap-2.5 px-3.5 py-1.5 text-[12px] border-b-2 border-black flex-wrap flex-shrink-0"
           style={{ color: 'var(--gray)' }}
         >
           <span>🌅 {today.sunrise}</span>
@@ -91,14 +91,14 @@ export function InfoMode() {
               return (
                 <div
                   key={i}
-                  className="flex-1 text-center py-[7px] px-0.5 text-[10px] border-r border-gray-200 last:border-0 min-w-[48px]"
+                  className="flex-1 text-center py-2 px-0.5 text-[11px] border-r border-gray-200 last:border-0 min-w-[52px]"
                 >
-                  <div className="font-mono text-[9px]" style={{ color: 'var(--gray)' }}>
+                  <div className="font-mono text-[11px]" style={{ color: 'var(--gray)' }}>
                     {hr}:00
                   </div>
-                  <div className="text-[14px] my-0.5">{weatherIcon(h.icon)}</div>
-                  <div className="font-mono text-[9px]">{h.temp}°</div>
-                  <div className="text-[8px]" style={{ color: 'var(--light-gray)' }}>
+                  <div className="text-[16px] my-0.5">{weatherIcon(h.icon)}</div>
+                  <div className="font-mono text-[11px]">{h.temp}°</div>
+                  <div className="text-[10px]" style={{ color: 'var(--light-gray)' }}>
                     {h.pop}%
                   </div>
                 </div>
@@ -112,11 +112,11 @@ export function InfoMode() {
         {forecast5.map((f, i) => (
           <div
             key={i}
-            className="flex-1 text-center py-[7px] px-0.5 text-[10px] border-r border-gray-200 last:border-0"
+            className="flex-1 text-center py-2 px-0.5 text-[11px] border-r border-gray-200 last:border-0"
           >
-            <div className="font-bold text-[9px] mb-[3px]">{f.name}</div>
-            <div className="text-[14px] my-0.5">{f.icon}</div>
-            <div className="font-mono text-[9px]">{f.temp}</div>
+            <div className="font-bold text-[11px] mb-[3px]">{f.name}</div>
+            <div className="text-[16px] my-0.5">{f.icon}</div>
+            <div className="font-mono text-[11px]">{f.temp}</div>
           </div>
         ))}
       </div>
@@ -124,11 +124,11 @@ export function InfoMode() {
       {/* Air quality */}
       {air && (
         <div className="px-3.5 py-2 border-b border-gray-200 flex-shrink-0">
-          <div className="flex items-center gap-3 text-[11px]">
+          <div className="flex items-center gap-3 text-[13px]">
             <span className="font-bold">空气质量</span>
-            <span className="font-mono font-bold text-[14px]">{air.aqi}</span>
+            <span className="font-mono font-bold text-[16px]">{air.aqi}</span>
             <span style={{ color: 'var(--gray)' }}>{air.category}</span>
-            <span className="text-[10px]" style={{ color: 'var(--light-gray)' }}>
+            <span className="text-[12px]" style={{ color: 'var(--light-gray)' }}>
               PM2.5: {air.pm2p5} · PM10: {air.pm10}
             </span>
           </div>
@@ -139,14 +139,14 @@ export function InfoMode() {
       <div className="px-3.5 py-2.5 flex-1 overflow-y-auto">
         <div className="widget-label">今日要闻</div>
         {news.map((item, i) => (
-          <div key={i} className="py-[7px] border-b border-gray-200 last:border-0">
+          <div key={i} className="py-2 border-b border-gray-200 last:border-0">
             <div
-              className="text-[8px] font-black tracking-widest inline-block border px-1 mb-[3px]"
+              className="text-[10px] font-black tracking-widest inline-block border px-1 mb-1"
               style={{ color: 'var(--gray)' }}
             >
               {item.tag}
             </div>
-            <div className="text-[12px] leading-relaxed">{item.text}</div>
+            <div className="text-[14px] leading-relaxed">{item.text}</div>
           </div>
         ))}
       </div>

@@ -26,10 +26,10 @@ export function WallpaperMode() {
       />
 
       {/* Hint */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-[#333] text-[10px] tracking-widest text-center">
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-[#333] text-[12px] tracking-widest text-center">
         ── 壁纸区域 ──
         <br />
-        <span className="text-[8px]">在 APK 中替换为图片背景</span>
+        <span className="text-[10px]">在 APK 中替换为图片背景</span>
       </div>
 
       {/* Overlay */}
@@ -37,9 +37,9 @@ export function WallpaperMode() {
         className="absolute bottom-0 left-0 right-0 z-10 px-3.5 py-3.5 text-white"
         style={{ background: 'linear-gradient(transparent, rgba(0,0,0,0.85))' }}
       >
-        <div className="font-mono text-[48px] font-bold leading-none">{time}</div>
-        <div className="text-[12px] tracking-widest text-[#ccc] mt-0.5">{dateStr}</div>
-        <div className="text-[10px] text-[#888] mt-1.5 flex gap-3">
+        <div className="font-mono text-[52px] font-bold leading-none">{time}</div>
+        <div className="text-[14px] tracking-widest text-[#ccc] mt-0.5">{dateStr}</div>
+        <div className="text-[12px] text-[#888] mt-1.5 flex gap-3">
           <span>🔋 --%</span>
           {w && (
             <span>

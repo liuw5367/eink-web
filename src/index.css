@@ -21,7 +21,7 @@
   }
 
   html {
-    font-size: 16px;
+    font-size: 20px;
   }
 
   body {
@@ -51,12 +51,12 @@
 /* ─── Shared widget styles ─── */
 @layer components {
   .widget-label {
-    @apply text-[9px] font-bold tracking-[2px] uppercase mb-1.5;
+    @apply text-[11px] font-bold tracking-[2px] uppercase mb-1.5;
     color: var(--gray);
   }
 
   .btn {
-    @apply border-2 border-black bg-white px-3.5 py-1.5 text-[11px] font-bold tracking-wide cursor-pointer;
+    @apply border-2 border-black bg-white px-4 py-2 text-[13px] font-bold tracking-wide cursor-pointer;
     font-family: 'Noto Serif SC', serif;
   }
 

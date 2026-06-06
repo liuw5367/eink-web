@@ -44,23 +44,23 @@ export function BankeMode() {
       {/* Top */}
       <div className="px-3.5 pt-3.5 flex justify-between items-start">
         <div className="flex flex-col gap-1">
-          <div className="text-[16px] font-semibold tracking-[6px]" style={{ color: 'var(--gray)' }}>
+          <div className="text-[20px] font-semibold tracking-[6px]" style={{ color: 'var(--gray)' }}>
             {WD_FULL[now.getDay()]}
           </div>
-          <div className="text-[12px] tracking-widest" style={{ color: 'var(--gray)' }}>
+          <div className="text-[14px] tracking-widest" style={{ color: 'var(--gray)' }}>
             农历 {lunar.full}
             {lunar.festivals.length > 0 && ` · ${lunar.festivals.join(' ')}`}
           </div>
-          <div className="font-mono text-[20px] tracking-wide mt-0.5">{time}</div>
+          <div className="font-mono text-[24px] tracking-wide mt-0.5">{time}</div>
         </div>
         <div className="border-2 border-black p-2 flex flex-col gap-0.5 items-end">
-          <span className="font-mono text-[28px] font-bold tracking-wide">
+          <span className="font-mono text-[34px] font-bold tracking-wide">
             {w?.temp ?? '--'}°C
           </span>
-          <span className="text-[10px] tracking-wide" style={{ color: 'var(--gray)' }}>
+          <span className="text-[12px] tracking-wide" style={{ color: 'var(--gray)' }}>
             {w?.text ?? '加载中'}
           </span>
-          <span className="text-[9px] tracking-wide" style={{ color: 'var(--light-gray)' }}>
+          <span className="text-[11px] tracking-wide" style={{ color: 'var(--light-gray)' }}>
             {cfg.city}
           </span>
         </div>
@@ -76,7 +76,7 @@ export function BankeMode() {
         </div>
         <div className="flex justify-between items-center px-2.5 mt-1.5">
           <div className="flex-1 h-[1.5px] bg-black" />
-          <div className="text-[18px] font-semibold tracking-[6px] px-3">
+          <div className="text-[22px] font-semibold tracking-[6px] px-3">
             {now.getFullYear()}年{now.getMonth() + 1}月
           </div>
           <div className="flex-1 h-[1.5px] bg-black" />
@@ -91,19 +91,19 @@ export function BankeMode() {
           return (
             <div key={i} className="flex flex-col items-center gap-0.5">
               <span
-                className="text-[9px] font-bold tracking-wide"
+                className="text-[11px] font-bold tracking-wide"
                 style={{ color: 'var(--gray)' }}
               >
                 {['日', '一', '二', '三', '四', '五', '六'][d.getDay()]}
               </span>
               <span
-                className={`font-mono text-[18px] font-semibold w-[34px] h-[34px] flex items-center justify-center ${
+                className={`font-mono text-[20px] font-semibold w-[36px] h-[36px] flex items-center justify-center ${
                   isActive ? 'bg-black text-white rounded-sm font-bold' : ''
                 }`}
               >
                 {d.getDate()}
               </span>
-              <span className="text-[9px]" style={{ color: 'var(--light-gray)' }}>
+              <span className="text-[10px]" style={{ color: 'var(--light-gray)' }}>
                 {lun}
               </span>
             </div>
@@ -118,18 +118,18 @@ export function BankeMode() {
           {hourlyForecast.length > 0
             ? hourlyForecast.map((h, i) => (
                 <div key={i} className="flex flex-col items-center gap-0.5">
-                  <span className="text-[8px]" style={{ color: 'var(--gray)' }}>
+                  <span className="text-[10px]" style={{ color: 'var(--gray)' }}>
                     {h.time}
                   </span>
-                  <span className="text-[12px]">{h.icon}</span>
-                  <span className="font-mono text-[8px]">{h.temp}</span>
+                  <span className="text-[14px]">{h.icon}</span>
+                  <span className="font-mono text-[10px]">{h.temp}</span>
                 </div>
               ))
             : Array.from({ length: 7 }).map((_, i) => (
                 <div key={i} className="flex flex-col items-center gap-0.5">
-                  <span className="text-[8px]" style={{ color: 'var(--gray)' }}>—</span>
-                  <span className="text-[12px]">❓</span>
-                  <span className="font-mono text-[8px]">--°</span>
+                  <span className="text-[10px]" style={{ color: 'var(--gray)' }}>—</span>
+                  <span className="text-[14px]">❓</span>
+                  <span className="font-mono text-[10px]">--°</span>
                 </div>
               ))}
         </div>
@@ -139,25 +139,25 @@ export function BankeMode() {
           {forecast.length > 0
             ? forecast.map((f, i) => (
                 <div key={i} className="flex flex-col items-center gap-0.5">
-                  <span className="text-[8px] font-bold" style={{ color: 'var(--gray)' }}>
+                  <span className="text-[10px] font-bold" style={{ color: 'var(--gray)' }}>
                     {f.day}
                   </span>
-                  <span className="text-[12px]">{f.icon}</span>
-                  <span className="font-mono text-[8px]">{f.temp}</span>
+                  <span className="text-[14px]">{f.icon}</span>
+                  <span className="font-mono text-[10px]">{f.temp}</span>
                 </div>
               ))
             : Array.from({ length: 7 }).map((_, i) => (
                 <div key={i} className="flex flex-col items-center gap-0.5">
-                  <span className="text-[8px] font-bold" style={{ color: 'var(--gray)' }}>—</span>
-                  <span className="text-[12px]">❓</span>
-                  <span className="font-mono text-[8px]">--/--</span>
+                  <span className="text-[10px] font-bold" style={{ color: 'var(--gray)' }}>—</span>
+                  <span className="text-[14px]">❓</span>
+                  <span className="font-mono text-[10px]">--/--</span>
                 </div>
               ))}
         </div>
 
         {/* Row 3: indicators left + quote right */}
         <div className="flex justify-between items-end">
-          <div className="flex flex-wrap gap-x-3 gap-y-0.5 text-[9px]" style={{ color: 'var(--gray)' }}>
+          <div className="flex flex-wrap gap-x-3 gap-y-0.5 text-[11px]" style={{ color: 'var(--gray)' }}>
             {w && <span>体感 {w.feelsLike}°</span>}
             {w && <span>风速 {w.windScale}级</span>}
             {w && <span>湿度 {w.humidity}%</span>}
@@ -166,7 +166,7 @@ export function BankeMode() {
             {today && <span>日落 {today.sunset}</span>}
           </div>
           <div
-            className="text-[10px] tracking-widest text-right leading-relaxed"
+            className="text-[12px] tracking-widest text-right leading-relaxed"
             style={{ color: 'var(--light-gray)' }}
           >
             万物并育而不相害

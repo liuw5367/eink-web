@@ -35,9 +35,9 @@ export function ClockMode() {
         >
           {useClock().time}
         </div>
-        <div className="text-[13px] font-semibold tracking-wide mt-1">{dateStr}</div>
+        <div className="text-[15px] font-semibold tracking-wide mt-1">{dateStr}</div>
         {cfg.lunar && (
-          <div className="text-[10px] tracking-wide mt-0.5" style={{ color: 'var(--gray)' }}>
+          <div className="text-[12px] tracking-wide mt-0.5" style={{ color: 'var(--gray)' }}>
             农历 {lunar.full}
             {lunar.festivals.length > 0 && ` · ${lunar.festivals.join(' ')}`}
             {lunar.jieQi && ` · ${lunar.jieQi}`}
@@ -51,15 +51,15 @@ export function ClockMode() {
           <div className="flex items-center justify-between px-3.5 py-2.5 border-b border-gray-200 gap-2">
             <div>
               <div className="widget-label">📍 {cfg.city}</div>
-              <div className="font-mono text-[34px] font-bold leading-none">
+              <div className="font-mono text-[38px] font-bold leading-none">
                 {w?.temp ?? '--'}°
               </div>
-              <div className="text-[11px] mt-0.5" style={{ color: 'var(--gray)' }}>
+              <div className="text-[13px] mt-0.5" style={{ color: 'var(--gray)' }}>
                 {w?.text ?? '加载中…'}
               </div>
               {today && (
                 <div
-                  className="font-mono text-[11px] mt-[3px]"
+                  className="font-mono text-[13px] mt-[3px]"
                   style={{ color: 'var(--gray)' }}
                 >
                   {today.tempMax}° / {today.tempMin}°
@@ -67,11 +67,11 @@ export function ClockMode() {
               )}
             </div>
             <div className="text-right">
-              <span className="text-[30px] block">{icon}</span>
+              <span className="text-[34px] block">{icon}</span>
             </div>
           </div>
           <div
-            className="flex gap-2.5 px-3.5 py-1.5 text-[10px] border-b border-gray-200 flex-wrap"
+            className="flex gap-2.5 px-3.5 py-1.5 text-[12px] border-b border-gray-200 flex-wrap"
             style={{ color: 'var(--gray)' }}
           >
             {w && (
@@ -97,13 +97,13 @@ export function ClockMode() {
                 return (
                   <div
                     key={i}
-                    className="flex-1 text-center py-1.5 px-0.5 text-[10px] border-r border-gray-100 last:border-0"
+                    className="flex-1 text-center py-2 px-0.5 text-[11px] border-r border-gray-100 last:border-0"
                   >
-                    <div className="font-mono text-[9px]" style={{ color: 'var(--gray)' }}>
+                    <div className="font-mono text-[11px]" style={{ color: 'var(--gray)' }}>
                       {hr}:00
                     </div>
-                    <div className="text-[14px] my-0.5">{weatherIcon(h.icon)}</div>
-                    <div className="font-mono text-[9px]">{h.temp}°</div>
+                    <div className="text-[16px] my-0.5">{weatherIcon(h.icon)}</div>
+                    <div className="font-mono text-[11px]">{h.temp}°</div>
                   </div>
                 );
               })}
@@ -117,20 +117,20 @@ export function ClockMode() {
         <div className="px-3.5 py-2.5 border-b border-gray-200">
           <div className="widget-label">今日安排</div>
           <div className="flex flex-col">
-            <div className="flex items-baseline gap-2 py-1 text-[12px] border-b border-gray-100 last:border-0">
-              <span className="font-mono text-[10px] min-w-[38px]" style={{ color: 'var(--gray)' }}>
+            <div className="flex items-baseline gap-2 py-1 text-[14px] border-b border-gray-100 last:border-0">
+              <span className="font-mono text-[12px] min-w-[42px]" style={{ color: 'var(--gray)' }}>
                 10:00
               </span>
               <span>产品评审会议</span>
             </div>
-            <div className="flex items-baseline gap-2 py-1 text-[12px] border-b border-gray-100 last:border-0">
-              <span className="font-mono text-[10px] min-w-[38px]" style={{ color: 'var(--gray)' }}>
+            <div className="flex items-baseline gap-2 py-1 text-[14px] border-b border-gray-100 last:border-0">
+              <span className="font-mono text-[12px] min-w-[42px]" style={{ color: 'var(--gray)' }}>
                 14:30
               </span>
               <span>代码 Code Review</span>
             </div>
-            <div className="flex items-baseline gap-2 py-1 text-[12px] border-b border-gray-100 last:border-0">
-              <span className="font-mono text-[10px] min-w-[38px]" style={{ color: 'var(--gray)' }}>
+            <div className="flex items-baseline gap-2 py-1 text-[14px] border-b border-gray-100 last:border-0">
+              <span className="font-mono text-[12px] min-w-[42px]" style={{ color: 'var(--gray)' }}>
                 明天
               </span>
               <span>还图书馆的书</span>
@@ -143,10 +143,10 @@ export function ClockMode() {
       {cfg.quote && (
         <div className="px-3.5 py-2.5 mt-auto">
           <div className="widget-label">每日一句</div>
-          <div className="text-[12px] leading-relaxed text-[#333]">
+          <div className="text-[14px] leading-relaxed text-[#333]">
             读书不觉已春深，一寸光阴一寸金。
           </div>
-          <div className="text-[10px] mt-[3px] text-right" style={{ color: 'var(--light-gray)' }}>
+          <div className="text-[12px] mt-[3px] text-right" style={{ color: 'var(--light-gray)' }}>
             — 王贞白《白鹿洞》
           </div>
         </div>

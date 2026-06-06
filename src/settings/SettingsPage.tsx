@@ -41,9 +41,9 @@ export function SettingsPage() {
     <div className="fixed inset-0 bg-white z-[100] flex flex-col">
       {/* Header */}
       <div className="flex items-center justify-between px-3.5 py-[11px] border-b-2 border-black flex-shrink-0">
-        <div className="text-[18px] font-black tracking-wide">⚙ 设置</div>
+        <div className="text-[22px] font-black tracking-wide">⚙ 设置</div>
         <button
-          className="text-[11px] font-bold cursor-pointer px-2.5 py-[5px] border-2 border-black tracking-wide"
+          className="text-[13px] font-bold cursor-pointer px-2.5 py-[5px] border-2 border-black tracking-wide"
           onClick={() => setSettingsOpen(false)}
         >
           ✕ 关闭
@@ -55,7 +55,7 @@ export function SettingsPage() {
         {TABS.map((t) => (
           <button
             key={t.key}
-            className={`flex-1 py-2 text-[12px] font-bold tracking-wide cursor-pointer border-r border-black last:border-r-0 ${
+            className={`flex-1 py-2.5 text-[14px] font-bold tracking-wide cursor-pointer border-r border-black last:border-r-0 ${
               tab === t.key ? 'bg-black text-white' : 'bg-white text-black'
             }`}
             onClick={() => setTab(t.key)}
@@ -76,7 +76,7 @@ export function SettingsPage() {
                 {MODE_CARDS.map((card) => (
                   <button
                     key={card.mode}
-                    className={`border-2 px-1.5 py-2.5 text-center cursor-pointer text-[10px] font-bold ${
+                    className={`border-2 px-1.5 py-2.5 text-center cursor-pointer text-[12px] font-bold ${
                       cfg.mode === card.mode
                         ? 'border-black bg-black text-white'
                         : 'border-gray-300'
@@ -86,7 +86,7 @@ export function SettingsPage() {
                       setSettingsOpen(false);
                     }}
                   >
-                    <div className="text-[18px] mb-1">{card.icon}</div>
+                    <div className="text-[22px] mb-1">{card.icon}</div>
                     {card.label}
                   </button>
                 ))}
@@ -134,7 +134,7 @@ export function SettingsPage() {
                 {INTERVAL_CHIPS.map((chip) => (
                   <button
                     key={chip.value}
-                    className={`border-2 border-black px-3 py-1 text-[11px] font-bold cursor-pointer ${
+                    className={`border-2 border-black px-3 py-1.5 text-[13px] font-bold cursor-pointer ${
                       cfg.interval === chip.value ? 'bg-black text-white' : 'bg-white'
                     }`}
                     style={{ fontFamily: "'Noto Serif SC', serif" }}
@@ -155,7 +155,7 @@ export function SettingsPage() {
                 <Toggle checked={cfg.night} onChange={(v) => update({ night: v })} />
               </SettingRow>
               <div
-                className="flex items-center gap-2 px-3.5 py-1 text-[12px]"
+                className="flex items-center gap-2 px-3.5 py-1 text-[14px]"
                 style={{ opacity: cfg.night ? 1 : 0.4 }}
               >
                 <span className="text-[12px] font-semibold">时段</span>
@@ -254,7 +254,7 @@ export function SettingsPage() {
               }}
             >
               <span
-                className="text-[11px] font-bold cursor-pointer"
+                className="text-[13px] font-bold cursor-pointer"
                 style={{ color: 'var(--gray)' }}
               >
                 ▶ 预览
@@ -268,7 +268,7 @@ export function SettingsPage() {
               }}
             >
               <span
-                className="text-[11px] font-bold cursor-pointer"
+                className="text-[13px] font-bold cursor-pointer"
                 style={{ color: 'var(--gray)' }}
               >
                 ↺ 刷新
@@ -283,7 +283,7 @@ export function SettingsPage() {
                 }
               }}
             >
-              <span className="text-[11px] font-bold text-red-600 cursor-pointer">
+              <span className="text-[13px] font-bold text-red-600 cursor-pointer">
                 重置
               </span>
             </SettingRow>
@@ -292,7 +292,7 @@ export function SettingsPage() {
 
         {/* Footer */}
         <div
-          className="px-3.5 py-4 text-center text-[10px] leading-relaxed"
+          className="px-3.5 py-4 text-center text-[12px] leading-relaxed"
           style={{ color: '#bbb' }}
         >
           EInk Panel v1.0 · 掌阅 Neo3 专版
@@ -307,7 +307,7 @@ export function SettingsPage() {
 function SectionTitle({ children }: { children: React.ReactNode }) {
   return (
     <div
-      className="text-[8px] font-black tracking-[2.5px] px-3.5 pt-2.5 pb-1 uppercase"
+      className="text-[10px] font-black tracking-[2.5px] px-3.5 pt-2.5 pb-1 uppercase"
       style={{ color: 'var(--gray)' }}
     >
       {children}
