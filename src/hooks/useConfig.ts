@@ -17,8 +17,8 @@ const DEFAULTS: AppConfig = {
   todo: true,
   quote: true,
   fontSize: 'md',
-  city: '北京',
-  apiKey: '',
+  city: import.meta.env.PUBLIC_QWEATHER_CITY || '北京',
+  apiKey: import.meta.env.PUBLIC_QWEATHER_KEY || '',
   wpSrc: 'pattern',
   keepOn: true,
   fullscreen: true,
@@ -28,7 +28,13 @@ const DEFAULTS: AppConfig = {
 function loadConfig(): AppConfig {
   try {
     const saved = localStorage.getItem(STORAGE_KEY);
-    if (saved) return { ...DEFAULTS, ...JSON.parse(saved) };
+    if (saved) {
+      const parsed = JSON.parse(saved);
+      // Let env defaults take precedence over empty saved values
+      if (!parsed.apiKey && DEFAULTS.apiKey) parsed.apiKey = DEFAULTS.apiKey;
+      if (!parsed.city && DEFAULTS.city) parsed.city = DEFAULTS.city;
+      return { ...DEFAULTS, ...parsed };
+    }
   } catch {}
   return { ...DEFAULTS };
 }
