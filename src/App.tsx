@@ -1,4 +1,3 @@
-import { StatusBar } from './components/StatusBar';
 import { BottomNav } from './components/BottomNav';
 import { NightOverlay } from './components/NightOverlay';
 import { ClockMode } from './modes/ClockMode';
@@ -67,7 +66,6 @@ function App() {
 
   return (
     <>
-      <StatusBar />
       <div className="flex-1 overflow-hidden relative">
         <ActiveMode />
       </div>
