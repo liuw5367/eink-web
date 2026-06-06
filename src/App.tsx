@@ -1,28 +1,21 @@
 import { BottomNav } from './components/BottomNav';
 import { Layout } from './components/Layout';
 import { NightOverlay } from './components/NightOverlay';
-import { ClockMode } from './modes/ClockMode';
 import { BankeMode } from './modes/BankeMode';
-import { InfoMode } from './modes/InfoMode';
 import { ChenbaoMode } from './modes/ChenbaoMode';
-import { WallpaperMode } from './modes/WallpaperMode';
 import { SettingsPage } from './settings/SettingsPage';
 import { useConfigStore } from './hooks/useConfig';
 import { useEffect } from 'react';
 
 const MODE_COMPONENTS = {
-  clock: ClockMode,
-  info: InfoMode,
   banke: BankeMode,
   chenbao: ChenbaoMode,
-  wallpaper: WallpaperMode,
 } as const;
 
 function App() {
   const cfg = useConfigStore((s) => s.cfg);
   const settingsOpen = useConfigStore((s) => s.settingsOpen);
   const setNightActive = useConfigStore((s) => s.setNightActive);
-  const nightActive = useConfigStore((s) => s.nightActive);
 
   // Font size
   useEffect(() => {
@@ -55,13 +48,6 @@ function App() {
       window.Android.setKeepScreenOn(true);
     }
   }, [cfg.keepOn]);
-
-  // Night brightness
-  useEffect(() => {
-    if (nightActive && cfg.nightDim && window.Android?.setScreenBrightness) {
-      window.Android.setScreenBrightness(0.05);
-    }
-  }, [nightActive, cfg.nightDim]);
 
   const ActiveMode = MODE_COMPONENTS[cfg.mode];
 

@@ -21,7 +21,7 @@ export function SettingRow({ label, sub, children, onClick, danger }: SettingRow
           {label}
         </div>
         {sub && (
-          <div className="text-[12px] mt-0.5" style={{ color: 'var(--light-gray)' }}>
+          <div className="text-[12px] mt-0.5">
             {sub}
           </div>
         )}

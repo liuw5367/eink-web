@@ -4,25 +4,17 @@ import type { AppConfig, Mode } from '../types';
 const STORAGE_KEY = 'eink_cfg';
 
 const DEFAULTS: AppConfig = {
-  mode: 'clock',
+  mode: 'banke',
   interval: 15,
   topHour: false,
   night: true,
-  nightStart: '22:00',
-  nightEnd: '07:00',
+  nightStart: '23:00',
+  nightEnd: '06:00',
   nightSkip: true,
-  nightDim: true,
-  lunar: true,
-  weather: true,
-  todo: true,
-  quote: true,
   fontSize: 'md',
   city: import.meta.env.PUBLIC_QWEATHER_CITY || '北京',
   apiKey: import.meta.env.PUBLIC_QWEATHER_KEY || '',
-  wpSrc: 'pattern',
   keepOn: true,
-  fullscreen: true,
-  orient: 'portrait',
 };
 
 function loadConfig(): AppConfig {

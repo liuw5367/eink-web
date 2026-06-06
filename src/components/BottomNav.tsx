@@ -4,22 +4,15 @@ import { useClock, zp } from "../hooks/useClock";
 import type { Mode } from "../types";
 
 export const MODE_NAMES: Record<Mode, string> = {
-  // clock: '时钟',
-  // info: '资讯',
-  // wallpaper: '壁纸',
   banke: "版刻",
   chenbao: "晨报",
 };
 
 const MODE_ICONS: Record<Mode, string> = {
-  // clock: '🕐',
-  // info: '📰',
-  // wallpaper: '🖼',
   banke: "⬛",
   chenbao: "📰",
 };
 
-// const ALL_MODES: Mode[] = ["banke", "chenbao", "clock", "info", "wallpaper"];
 const ALL_MODES: Mode[] = ["banke", "chenbao"];
 
 export function BottomNav() {
