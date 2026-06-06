@@ -1,5 +1,5 @@
-const BASE_URL = 'https://devapi.qweather.com';
-const GEO_URL = 'https://geoapi.qweather.com';
+const BASE_URL = import.meta.env.PUBLIC_QWEATHER_BASE_URL;
+const GEO_URL = import.meta.env.PUBLIC_QWEATHER_GEO_URL;
 
 export interface WeatherNow {
   temp: string;
@@ -92,7 +92,7 @@ export async function getWeatherNow(
   const data = await fetchJson<{ now?: WeatherNow; code: string }>(
     `${BASE_URL}/v7/weather/now?location=${locationId}&key=${key}&lang=zh`,
   );
-  if (data?.code !== '200' || !data.now) return null;
+  if (data?.code !== "200" || !data.now) return null;
   return data.now;
 }
 
@@ -103,7 +103,7 @@ export async function getHourlyForecast(
   const data = await fetchJson<{ hourly?: HourlyForecast[]; code: string }>(
     `${BASE_URL}/v7/weather/24h?location=${locationId}&key=${key}&lang=zh`,
   );
-  if (data?.code !== '200') return [];
+  if (data?.code !== "200") return [];
   return data.hourly ?? [];
 }
 
@@ -114,7 +114,7 @@ export async function getDailyForecast(
   const data = await fetchJson<{ daily?: DailyForecast[]; code: string }>(
     `${BASE_URL}/v7/weather/7d?location=${locationId}&key=${key}&lang=zh`,
   );
-  if (data?.code !== '200') return [];
+  if (data?.code !== "200") return [];
   return data.daily ?? [];
 }
 
@@ -126,6 +126,6 @@ export async function getAirNow(
   const data = await fetchJson<{ now?: AirNow; code: string }>(
     `${BASE_URL}/airquality/v1/current/${lat}/${lon}?key=${key}&lang=zh`,
   );
-  if (data?.code !== '200' || !data.now) return null;
+  if (data?.code !== "200" || !data.now) return null;
   return data.now;
 }

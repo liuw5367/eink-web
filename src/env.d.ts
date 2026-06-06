@@ -3,6 +3,8 @@
 interface ImportMetaEnv {
   readonly PUBLIC_QWEATHER_KEY: string;
   readonly PUBLIC_QWEATHER_CITY: string;
+  readonly PUBLIC_QWEATHER_BASE_URL: string;
+  readonly PUBLIC_QWEATHER_GEO_URL: string;
 }
 
 interface ImportMeta {
