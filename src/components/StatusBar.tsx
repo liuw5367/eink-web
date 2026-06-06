@@ -1,6 +1,6 @@
-import { useClock } from '../hooks/useClock';
-import { useConfigStore } from '../hooks/useConfig';
-import { MODE_NAMES } from './BottomNav';
+import { useClock } from "../hooks/useClock";
+import { useConfigStore } from "../hooks/useConfig";
+import { MODE_NAMES } from "./BottomNav";
 
 export function StatusBar() {
   const { time } = useClock();
@@ -12,7 +12,7 @@ export function StatusBar() {
         <span>{MODE_NAMES[cfg.mode]}</span>
         <span className="opacity-40">│</span>
         <span className="opacity-75">
-          {cfg.interval === 0 ? '手动刷新' : `↺ ${cfg.interval}min`}
+          {cfg.interval === 0 ? "手动刷新" : `↺ ${cfg.interval}min`}
         </span>
       </div>
       <div className="flex items-center gap-2.5">

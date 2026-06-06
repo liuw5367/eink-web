@@ -16,8 +16,8 @@ export function BankeMode() {
   const lunar = getLunarInfo(now);
   const weekDates = getWeekDates(now);
 
-  // Hourly: next 6 hours
-  const hourlyForecast = hourly.slice(0, 6).map((h) => {
+  // Hourly: next 7 hours
+  const hourlyForecast = hourly.slice(0, 7).map((h) => {
     const dt = new Date(h.fxTime);
     return {
       time: `${dt.getHours()}时`,
@@ -27,7 +27,7 @@ export function BankeMode() {
   });
 
   // Forecast: skip today, show next 7 days
-  const forecast = daily.slice(1, 8).map((d) => {
+  const forecast = daily.slice(0, 7).map((d) => {
     const dt = new Date(d.fxDate);
     const info = getLunarInfo(dt);
     return {
@@ -43,34 +43,24 @@ export function BankeMode() {
     <section className="flex flex-col h-full">
       {/* Top */}
       <div className="px-3.5 pt-3.5 flex justify-between items-start">
-        <div className="flex flex-col gap-1">
-          <div
-            className="text-[22px] font-bold tracking-[6px]"
-          >
+        <div className="text-[22px] flex flex-col gap-1">
+          <div className=" font-bold tracking-[6px]">
             {WD_FULL[now.getDay()]}
           </div>
-          <div
-            className="text-[15px] font-semibold tracking-widest"
-          >
-            农历 {lunar.full}
+          <div className=" font-semibold tracking-widest">
+            {lunar.full}
             {lunar.festivals.length > 0 && ` · ${lunar.festivals.join(" ")}`}
           </div>
-          <div className="font-mono text-[26px] font-bold tracking-wide mt-0.5">
-            {time}
-          </div>
+          <div className="font-mono font-bold tracking-wide">{time}</div>
         </div>
         <div className="border-2 border-black p-2 flex flex-col gap-0.5 items-end">
           <span className="font-mono text-[38px] font-bold tracking-wide">
             {w?.temp ?? "--"}°C
           </span>
-          <span
-            className="text-[14px] font-semibold tracking-wide"
-          >
+          <span className="text-[14px] font-semibold tracking-wide">
             {w?.text ?? "加载中"}
           </span>
-          <span
-            className="text-[12px] font-semibold tracking-wide"
-          >
+          <span className="text-[14px] font-semibold tracking-wide">
             {cfg.city}
           </span>
         </div>
@@ -103,9 +93,7 @@ export function BankeMode() {
           const lun = getLunarShort(d);
           return (
             <div key={i} className="flex flex-col items-center gap-0.5">
-              <span
-                className="text-[13px] font-bold tracking-wide"
-                  >
+              <span className="text-[13px] font-bold tracking-wide">
                 {["日", "一", "二", "三", "四", "五", "六"][d.getDay()]}
               </span>
               <span
@@ -115,81 +103,77 @@ export function BankeMode() {
               >
                 {d.getDate()}
               </span>
-              <span
-                className="text-[11px] font-semibold"
-                  >
-                {lun}
-              </span>
+              <span className="text-[11px] font-semibold">{lun}</span>
             </div>
           );
         })}
       </div>
 
+      <div className="flex-1" />
+      <div className="mx-6 h-[1.5px] bg-black" />
+
       {/* Bottom */}
-      <div className="mt-auto px-3.5 py-2 border-t-2 border-black flex flex-col gap-2">
-        {/* Row 1: 6-hour forecast */}
+      <div className="px-3.5 py-2 flex flex-col gap-2">
+        {/* Row 1: 7-hour forecast */}
         <div className="flex justify-between">
           {hourlyForecast.length > 0
             ? hourlyForecast.map((h, i) => (
-                <div key={i} className="flex flex-col items-center gap-0.5">
-                  <span
-                    className="text-[12px] font-semibold"
-                          >
-                    {h.time}
-                  </span>
+                <div
+                  key={i}
+                  className="flex-1 flex justify-center flex-col items-center gap-0.5"
+                >
+                  <span className="text-[14px] font-semibold">{h.time}</span>
                   <span className="text-[16px]">{h.icon}</span>
-                  <span className="font-mono text-[12px] font-bold">
+                  <span className="font-mono text-[14px] font-bold">
                     {h.temp}
                   </span>
                 </div>
               ))
-            : Array.from({ length: 6 }).map((_, i) => (
-                <div key={i} className="flex flex-col items-center gap-0.5">
-                  <span
-                    className="text-[12px] font-semibold"
-                          >
-                    —
-                  </span>
+            : Array.from({ length: 7 }).map((_, i) => (
+                <div
+                  key={i}
+                  className="flex-1 flex flex-col items-center gap-0.5"
+                >
+                  <span className="text-[14px] font-semibold">—</span>
                   <span className="text-[16px]">❓</span>
-                  <span className="font-mono text-[12px] font-bold">--°</span>
+                  <span className="font-mono text-[14px] font-bold">--°</span>
                 </div>
               ))}
         </div>
+
+        <div className="flex-1" />
+        <div className="mx-3.5 h-[1.5px] bg-black" />
 
         {/* Row 2: 7-day forecast */}
         <div className="flex justify-between">
           {forecast.length > 0
             ? forecast.map((f, i) => (
-                <div key={i} className="flex flex-col items-center gap-0.5">
-                  <span
-                    className="text-[12px] font-bold"
-                          >
-                    {f.day}
-                  </span>
+                <div
+                  key={i}
+                  className="flex-1 flex flex-col items-center gap-0.5"
+                >
+                  <span className="text-[14px] font-bold">{f.day}</span>
                   <span className="text-[16px]">{f.icon}</span>
-                  <span className="font-mono text-[12px] font-bold">
+                  <span className="font-mono text-[14px] font-bold">
                     {f.temp}
                   </span>
                 </div>
               ))
             : Array.from({ length: 7 }).map((_, i) => (
-                <div key={i} className="flex flex-col items-center gap-0.5">
-                  <span
-                    className="text-[12px] font-bold"
-                          >
-                    —
-                  </span>
+                <div
+                  key={i}
+                  className="flex-1 flex flex-col items-center gap-0.5"
+                >
+                  <span className="text-[14px] font-bold">—</span>
                   <span className="text-[16px]">❓</span>
-                  <span className="font-mono text-[12px] font-bold">--/--</span>
+                  <span className="font-mono text-[14px] font-bold">--/--</span>
                 </div>
               ))}
         </div>
 
         {/* Row 3: indicators left + quote right */}
         <div className="flex justify-between items-end">
-          <div
-            className="flex flex-wrap gap-x-3 gap-y-0.5 text-[13px] font-semibold"
-          >
+          <div className="flex flex-wrap gap-x-3 gap-y-0.5 text-[14px] font-semibold">
             {w && <span>体感 {w.feelsLike}°</span>}
             {w && <span>风速 {w.windScale}级</span>}
             {w && <span>湿度 {w.humidity}%</span>}
@@ -197,14 +181,6 @@ export function BankeMode() {
             {today && <span>日出 {today.sunrise}</span>}
             {today && <span>日落 {today.sunset}</span>}
           </div>
-          {/*<div
-            className="text-[13px] font-semibold tracking-widest text-right leading-relaxed"
-            style={{ color: 'var(--light-gray)' }}
-          >
-            万物并育而不相害
-            <br />
-            道并行而不相悖
-          </div>*/}
         </div>
       </div>
     </section>
