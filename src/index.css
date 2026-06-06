@@ -1,0 +1,100 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700;900&family=JetBrains+Mono:wght@400;700&display=swap');
+
+@layer base {
+  :root {
+    --bg: #ffffff;
+    --fg: #000000;
+    --gray: #555555;
+    --light-gray: #999999;
+    --border: 2px solid #000;
+  }
+
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  html {
+    font-size: 16px;
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--fg);
+    font-family: 'Noto Serif SC', 'PingFang SC', serif;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    user-select: none;
+  }
+
+  ::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/* ─── Shared widget styles ─── */
+@layer components {
+  .widget-label {
+    @apply text-[9px] font-bold tracking-[2px] uppercase mb-1.5;
+    color: var(--gray);
+  }
+
+  .btn {
+    @apply border-2 border-black bg-white px-3.5 py-1.5 text-[11px] font-bold tracking-wide cursor-pointer;
+    font-family: 'Noto Serif SC', serif;
+  }
+
+  .btn:active {
+    @apply opacity-60;
+  }
+
+  .btn-solid {
+    @apply bg-black text-white;
+  }
+
+  /* Toggle switch */
+  .toggle {
+    @apply relative w-[42px] h-6 flex-shrink-0;
+  }
+
+  .toggle input {
+    @apply opacity-0 w-0 h-0;
+  }
+
+  .t-slider {
+    @apply absolute inset-0 bg-gray-300 border-2 border-black cursor-pointer;
+  }
+
+  .toggle input:checked + .t-slider {
+    @apply bg-black;
+  }
+
+  .t-slider::after {
+    content: '';
+    @apply absolute w-4 h-4 left-0.5 top-0.5 bg-white;
+    transition: transform 0.1s;
+  }
+
+  .toggle input:checked + .t-slider::after {
+    transform: translateX(18px);
+  }
+}
+
+/* ─── Night overlay ─── */
+.night-time {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: clamp(64px, 20vw, 90px);
+  font-weight: 700;
+  color: #e0e0e0;
+  letter-spacing: -3px;
+  line-height: 1;
+}
