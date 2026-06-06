@@ -1,9 +1,29 @@
 import { useClock } from '../hooks/useClock';
+import { getLunarInfo } from '../hooks/useLunar';
 import { useConfigStore } from '../hooks/useConfig';
+import { useWeatherStore } from '../hooks/useWeather';
+import { weatherIcon } from '../utils/weatherIcon';
 
 export function ClockMode() {
-  const { time, dateStr, lunar } = useClock();
+  const { now, dateStr } = useClock();
   const cfg = useConfigStore((s) => s.cfg);
+  const w = useWeatherStore((s) => s.now);
+  const daily = useWeatherStore((s) => s.daily);
+  const air = useWeatherStore((s) => s.air);
+  const hourly = useWeatherStore((s) => s.hourly);
+
+  const lunar = getLunarInfo(now);
+  const today = daily[0];
+  const icon = w ? weatherIcon(w.icon) : '⛅';
+
+  // Find today's hourly forecasts remaining
+  const nowHour = now.getHours();
+  const upcomingHours = hourly
+    .filter((h) => {
+      const hTime = new Date(h.fxTime).getHours();
+      return hTime >= nowHour;
+    })
+    .slice(0, 4);
 
   return (
     <section className="flex flex-col overflow-y-auto overflow-x-hidden h-full">
@@ -13,12 +33,14 @@ export function ClockMode() {
           className="font-mono font-bold leading-none"
           style={{ fontSize: 'clamp(56px, 18vw, 80px)', letterSpacing: '-3px' }}
         >
-          {time}
+          {useClock().time}
         </div>
         <div className="text-[13px] font-semibold tracking-wide mt-1">{dateStr}</div>
         {cfg.lunar && (
           <div className="text-[10px] tracking-wide mt-0.5" style={{ color: 'var(--gray)' }}>
-            农历 {lunar}
+            农历 {lunar.full}
+            {lunar.festivals.length > 0 && ` · ${lunar.festivals.join(' ')}`}
+            {lunar.jieQi && ` · ${lunar.jieQi}`}
           </div>
         )}
       </div>
@@ -29,27 +51,64 @@ export function ClockMode() {
           <div className="flex items-center justify-between px-3.5 py-2.5 border-b border-gray-200 gap-2">
             <div>
               <div className="widget-label">📍 {cfg.city}</div>
-              <div className="font-mono text-[34px] font-bold leading-none">28°</div>
+              <div className="font-mono text-[34px] font-bold leading-none">
+                {w?.temp ?? '--'}°
+              </div>
               <div className="text-[11px] mt-0.5" style={{ color: 'var(--gray)' }}>
-                多云转晴
+                {w?.text ?? '加载中…'}
               </div>
-              <div className="font-mono text-[11px] mt-[3px]" style={{ color: 'var(--gray)' }}>
-                28° / 19°
-              </div>
+              {today && (
+                <div
+                  className="font-mono text-[11px] mt-[3px]"
+                  style={{ color: 'var(--gray)' }}
+                >
+                  {today.tempMax}° / {today.tempMin}°
+                </div>
+              )}
             </div>
             <div className="text-right">
-              <span className="text-[30px] block">⛅</span>
+              <span className="text-[30px] block">{icon}</span>
             </div>
           </div>
           <div
             className="flex gap-2.5 px-3.5 py-1.5 text-[10px] border-b border-gray-200 flex-wrap"
             style={{ color: 'var(--gray)' }}
           >
-            <span>🌬 东南风 3级</span>
-            <span>💧 湿度 65%</span>
-            <span>AQI: 良 45</span>
-            <span>🌅 05:11</span>
+            {w && (
+              <>
+                <span>🌬 {w.windDir} {w.windScale}级</span>
+                <span>💧 湿度 {w.humidity}%</span>
+              </>
+            )}
+            {air && <span>AQI: {air.category} {air.aqi}</span>}
+            {today && (
+              <>
+                <span>🌅 {today.sunrise}</span>
+                <span>🌇 {today.sunset}</span>
+              </>
+            )}
           </div>
+
+          {/* Hourly forecast */}
+          {upcomingHours.length > 0 && (
+            <div className="flex border-b border-gray-200">
+              {upcomingHours.map((h, i) => {
+                const hr = new Date(h.fxTime).getHours();
+                return (
+                  <div
+                    key={i}
+                    className="flex-1 text-center py-1.5 px-0.5 text-[10px] border-r border-gray-100 last:border-0"
+                  >
+                    <div className="font-mono text-[9px]" style={{ color: 'var(--gray)' }}>
+                      {hr}:00
+                    </div>
+                    <div className="text-[14px] my-0.5">{weatherIcon(h.icon)}</div>
+                    <div className="font-mono text-[9px]">{h.temp}°</div>
+                  </div>
+                );
+              })}
+            </div>
+          )}
         </>
       )}
 

@@ -1,9 +1,15 @@
 import { useClock } from '../hooks/useClock';
+import { getLunarInfo } from '../hooks/useLunar';
 import { useConfigStore } from '../hooks/useConfig';
+import { useWeatherStore } from '../hooks/useWeather';
+import { weatherIcon } from '../utils/weatherIcon';
 
 export function WallpaperMode() {
-  const { time, dateStr, lunar } = useClock();
+  const { now, time, dateStr } = useClock();
   const cfg = useConfigStore((s) => s.cfg);
+  const w = useWeatherStore((s) => s.now);
+
+  const lunar = getLunarInfo(now);
 
   return (
     <section className="relative bg-black overflow-hidden h-full">
@@ -27,13 +33,20 @@ export function WallpaperMode() {
       </div>
 
       {/* Overlay */}
-      <div className="relative z-10 mt-auto px-3.5 py-3.5 text-white" style={{ background: 'linear-gradient(transparent, rgba(0,0,0,0.85))' }}>
+      <div
+        className="absolute bottom-0 left-0 right-0 z-10 px-3.5 py-3.5 text-white"
+        style={{ background: 'linear-gradient(transparent, rgba(0,0,0,0.85))' }}
+      >
         <div className="font-mono text-[48px] font-bold leading-none">{time}</div>
         <div className="text-[12px] tracking-widest text-[#ccc] mt-0.5">{dateStr}</div>
         <div className="text-[10px] text-[#888] mt-1.5 flex gap-3">
           <span>🔋 --%</span>
-          <span>⛅ 28°C 多云</span>
-          {cfg.lunar && <span>农历 {lunar}</span>}
+          {w && (
+            <span>
+              {weatherIcon(w.icon)} {w.temp}°C {w.text}
+            </span>
+          )}
+          {cfg.lunar && <span>农历 {lunar.full}</span>}
         </div>
       </div>
     </section>

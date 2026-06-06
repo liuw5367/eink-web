@@ -1,16 +1,33 @@
 import { useConfigStore } from '../hooks/useConfig';
+import { useWeatherStore } from '../hooks/useWeather';
+import { getLunarInfo } from '../hooks/useLunar';
+import { weatherIcon } from '../utils/weatherIcon';
+import { useClock } from '../hooks/useClock';
+
+const WEEKDAY_NAMES = ['周日', '周一', '周二', '周三', '周四', '周五', '周六'];
 
 export function InfoMode() {
   const cfg = useConfigStore((s) => s.cfg);
+  const w = useWeatherStore((s) => s.now);
+  const daily = useWeatherStore((s) => s.daily);
+  const hourly = useWeatherStore((s) => s.hourly);
+  const air = useWeatherStore((s) => s.air);
+  const { now } = useClock();
 
-  const forecast = [
-    { name: '今天', icon: '⛅', temp: '28/19' },
-    { name: '明天', icon: '🌤', temp: '30/21' },
-    { name: '周四', icon: '☀️', temp: '32/22' },
-    { name: '周五', icon: '🌧', temp: '25/18' },
-    { name: '周六', icon: '⛅', temp: '27/19' },
-  ];
+  const today = daily[0];
+  const nowHour = now.getHours();
 
+  const forecast5 = daily.slice(0, 5).map((d, i) => {
+    const dt = new Date(d.fxDate);
+    const name = i === 0 ? '今天' : i === 1 ? '明天' : WEEKDAY_NAMES[dt.getDay()];
+    return {
+      name,
+      icon: weatherIcon(d.iconDay),
+      temp: `${d.tempMax}/${d.tempMin}`,
+    };
+  });
+
+  // News (placeholder)
   const news = [
     { tag: '科技', text: '国内大模型竞争加剧，多家厂商发布新一代基础模型' },
     { tag: '财经', text: 'A股午后震荡，沪指收涨 0.3%，科技板块领涨' },
@@ -31,24 +48,68 @@ export function InfoMode() {
           >
             📍 {cfg.city}市
           </div>
-          <div className="font-mono text-[52px] font-black leading-none">28°C</div>
-          <div className="text-[12px] mt-0.5">多云转晴</div>
-          <div
-            className="font-mono text-[11px] mt-1"
-            style={{ color: 'var(--gray)' }}
-          >
-            湿度 65% · 东南风 3级
+          <div className="font-mono text-[52px] font-black leading-none">
+            {w?.temp ?? '--'}°C
+          </div>
+          <div className="text-[12px] mt-0.5">{w?.text ?? '加载中…'}</div>
+          <div className="font-mono text-[11px] mt-1" style={{ color: 'var(--gray)' }}>
+            {w && `湿度 ${w.humidity}% · ${w.windDir} ${w.windScale}级`}
+            {air && ` · AQI ${air.aqi} ${air.category}`}
           </div>
         </div>
         <div className="text-center">
-          <span className="text-[40px] block">⛅</span>
-          <div className="font-mono text-[11px] mt-1">H:28 L:19</div>
+          <span className="text-[40px] block">{w ? weatherIcon(w.icon) : '⛅'}</span>
+          {today && (
+            <div className="font-mono text-[11px] mt-1">
+              H:{today.tempMax} L:{today.tempMin}
+            </div>
+          )}
         </div>
       </div>
 
-      {/* Forecast strip */}
+      {/* Sunrise/sunset + UV + precip */}
+      {today && (
+        <div
+          className="flex gap-2.5 px-3.5 py-1.5 text-[10px] border-b-2 border-black flex-wrap flex-shrink-0"
+          style={{ color: 'var(--gray)' }}
+        >
+          <span>🌅 {today.sunrise}</span>
+          <span>🌇 {today.sunset}</span>
+          <span>紫外线 {today.uvIndex}</span>
+          <span>降水 {today.precip}mm</span>
+        </div>
+      )}
+
+      {/* Hourly forecast strip */}
+      {hourly.length > 0 && (
+        <div className="flex border-b-2 border-black flex-shrink-0 overflow-x-auto">
+          {hourly
+            .filter((h) => new Date(h.fxTime).getHours() >= nowHour)
+            .slice(0, 8)
+            .map((h, i) => {
+              const hr = new Date(h.fxTime).getHours();
+              return (
+                <div
+                  key={i}
+                  className="flex-1 text-center py-[7px] px-0.5 text-[10px] border-r border-gray-200 last:border-0 min-w-[48px]"
+                >
+                  <div className="font-mono text-[9px]" style={{ color: 'var(--gray)' }}>
+                    {hr}:00
+                  </div>
+                  <div className="text-[14px] my-0.5">{weatherIcon(h.icon)}</div>
+                  <div className="font-mono text-[9px]">{h.temp}°</div>
+                  <div className="text-[8px]" style={{ color: 'var(--light-gray)' }}>
+                    {h.pop}%
+                  </div>
+                </div>
+              );
+            })}
+        </div>
+      )}
+
+      {/* 7-day forecast strip */}
       <div className="flex border-b-2 border-black flex-shrink-0">
-        {forecast.map((f, i) => (
+        {forecast5.map((f, i) => (
           <div
             key={i}
             className="flex-1 text-center py-[7px] px-0.5 text-[10px] border-r border-gray-200 last:border-0"
@@ -59,6 +120,20 @@ export function InfoMode() {
           </div>
         ))}
       </div>
+
+      {/* Air quality */}
+      {air && (
+        <div className="px-3.5 py-2 border-b border-gray-200 flex-shrink-0">
+          <div className="flex items-center gap-3 text-[11px]">
+            <span className="font-bold">空气质量</span>
+            <span className="font-mono font-bold text-[14px]">{air.aqi}</span>
+            <span style={{ color: 'var(--gray)' }}>{air.category}</span>
+            <span className="text-[10px]" style={{ color: 'var(--light-gray)' }}>
+              PM2.5: {air.pm2p5} · PM10: {air.pm10}
+            </span>
+          </div>
+        </div>
+      )}
 
       {/* News */}
       <div className="px-3.5 py-2.5 flex-1 overflow-y-auto">

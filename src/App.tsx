@@ -1,4 +1,5 @@
 import { BottomNav } from './components/BottomNav';
+import { Layout } from './components/Layout';
 import { NightOverlay } from './components/NightOverlay';
 import { ClockMode } from './modes/ClockMode';
 import { BankeMode } from './modes/BankeMode';
@@ -65,14 +66,14 @@ function App() {
   const ActiveMode = MODE_COMPONENTS[cfg.mode];
 
   return (
-    <>
+    <Layout>
       <div className="flex-1 overflow-hidden relative">
         <ActiveMode />
       </div>
       <BottomNav />
       {settingsOpen && <SettingsPage />}
       <NightOverlay />
-    </>
+    </Layout>
   );
 }
 

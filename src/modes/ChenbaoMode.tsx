@@ -1,13 +1,21 @@
-import { useClock, getLunarShort, zp } from '../hooks/useClock';
+import { useClock, zp } from '../hooks/useClock';
+import { getLunarInfo, getLunarShort, getWeekDates } from '../hooks/useLunar';
 import { useConfigStore } from '../hooks/useConfig';
+import { useWeatherStore } from '../hooks/useWeather';
+import { weatherIcon } from '../utils/weatherIcon';
+
+const WEEKDAY_NAMES = ['周日', '周一', '周二', '周三', '周四', '周五', '周六'];
 
 export function ChenbaoMode() {
-  const { now, time, WD_FULL, lunar } = useClock();
+  const { now, time, WD_FULL } = useClock();
   const cfg = useConfigStore((s) => s.cfg);
+  const w = useWeatherStore((s) => s.now);
+  const daily = useWeatherStore((s) => s.daily);
 
   const day = now.getDate();
+  const lunar = getLunarInfo(now);
 
-  // Mini calendar
+  // Mini calendar from real data
   const y = now.getFullYear();
   const m = now.getMonth();
   const firstDay = new Date(y, m, 1).getDay();
@@ -15,7 +23,13 @@ export function ChenbaoMode() {
   const prevDays = new Date(y, m, 0).getDate();
   const WD_HEADERS = ['日', '一', '二', '三', '四', '五', '六'];
 
-  const calCells: { day: number; other: boolean; isToday: boolean; isWeekend: boolean; lunar: string }[] = [];
+  const calCells: {
+    day: number;
+    other: boolean;
+    isToday: boolean;
+    isWeekend: boolean;
+    lunarStr: string;
+  }[] = [];
   let d = 1;
   let nd = 1;
   const total = Math.ceil((firstDay + daysInMonth) / 7) * 7;
@@ -39,15 +53,18 @@ export function ChenbaoMode() {
     const isWeekend = dow === 0 || dow === 6;
     const lunarStr = !other ? getLunarShort(new Date(y, m, cd)) : '';
 
-    calCells.push({ day: cd, other, isToday, isWeekend, lunar: lunarStr });
+    calCells.push({ day: cd, other, isToday, isWeekend, lunarStr });
   }
 
-  // Forecast
-  const forecast = [
-    { day: '周四', icon: '☀️', temp: '34°/22°' },
-    { day: '周五', icon: '🌤', temp: '30°/20°' },
-    { day: '周六', icon: '🌧', temp: '25°/18°' },
-  ];
+  // Forecast: skip today
+  const forecast = daily.slice(1, 4).map((fd) => {
+    const dt = new Date(fd.fxDate);
+    return {
+      day: WEEKDAY_NAMES[dt.getDay()],
+      icon: weatherIcon(fd.iconDay),
+      temp: `${fd.tempMax}°/${fd.tempMin}°`,
+    };
+  });
 
   return (
     <section
@@ -67,9 +84,12 @@ export function ChenbaoMode() {
           {zp(day)}
         </div>
         <div className="flex items-center gap-2.5 mt-2 pt-2 border-t-2 border-black">
-          <span className="text-[14px] font-bold tracking-widest">{WD_FULL[now.getDay()]}</span>
+          <span className="text-[14px] font-bold tracking-widest">
+            {WD_FULL[now.getDay()]}
+          </span>
           <span className="text-[11px] tracking-wide" style={{ color: 'var(--gray)' }}>
-            农历 {lunar}
+            农历 {lunar.full}
+            {lunar.festivals.length > 0 && ` · ${lunar.festivals.join(' ')}`}
           </span>
         </div>
         <div className="font-mono text-[48px] font-normal tracking-tight mt-2.5">{time}</div>
@@ -80,9 +100,7 @@ export function ChenbaoMode() {
             {WD_HEADERS.map((h, i) => (
               <div
                 key={i}
-                className={`text-center text-[9px] font-bold ${
-                  i === 0 || i === 6 ? 'font-bold' : ''
-                }`}
+                className="text-center text-[9px] font-bold"
                 style={{ color: 'var(--gray)' }}
               >
                 {h}
@@ -90,31 +108,30 @@ export function ChenbaoMode() {
             ))}
           </div>
           <div className="grid grid-cols-7">
-            {calCells.map((cell, i) => {
-              let cls = 'text-center py-1 flex flex-col items-center';
-              if (cell.isToday) cls += ' today-cell';
-              if (!cell.other) cls += ' cur';
-              if (cell.isWeekend) cls += ' end';
-              return (
-                <div key={i} className={cls}>
-                  <span
-                    className={`font-mono text-[12px] font-semibold ${
-                      cell.isToday
-                        ? 'bg-black text-white w-[22px] h-[22px] rounded-full flex items-center justify-center font-bold'
-                        : cell.other
-                          ? 'text-gray-400'
-                          : ''
-                    }`}
-                    style={!cell.isToday && !cell.other ? { color: 'var(--gray)' } : undefined}
-                  >
-                    {cell.day}
-                  </span>
-                  <span className="text-[7px] mt-px" style={{ color: 'var(--light-gray)' }}>
-                    {cell.lunar}
-                  </span>
-                </div>
-              );
-            })}
+            {calCells.map((cell, i) => (
+              <div
+                key={i}
+                className="text-center py-1 flex flex-col items-center"
+              >
+                <span
+                  className={`font-mono text-[12px] font-semibold ${
+                    cell.isToday
+                      ? 'bg-black text-white w-[22px] h-[22px] rounded-full flex items-center justify-center font-bold'
+                      : cell.other
+                        ? 'text-gray-400'
+                        : ''
+                  }`}
+                  style={
+                    !cell.isToday && !cell.other ? { color: 'var(--gray)' } : undefined
+                  }
+                >
+                  {cell.day}
+                </span>
+                <span className="text-[7px] mt-px" style={{ color: 'var(--light-gray)' }}>
+                  {cell.lunarStr}
+                </span>
+              </div>
+            ))}
           </div>
         </div>
       </div>
@@ -130,13 +147,17 @@ export function ChenbaoMode() {
             天气
           </div>
           <div className="flex items-end gap-1.5 mb-1">
-            <span className="text-[24px] leading-none">⛅</span>
-            <span className="font-mono text-[36px] font-bold leading-none">28°</span>
+            <span className="text-[24px] leading-none">
+              {w ? weatherIcon(w.icon) : '⛅'}
+            </span>
+            <span className="font-mono text-[36px] font-bold leading-none">
+              {w?.temp ?? '--'}°
+            </span>
           </div>
           <div className="text-[10px] leading-relaxed" style={{ color: 'var(--gray)' }}>
-            {cfg.city} · 多云
+            {cfg.city} · {w?.text ?? '加载中'}
             <br />
-            湿度 65% · 东南风 3级
+            {w && `湿度 ${w.humidity}% · ${w.windDir} ${w.windScale}级`}
           </div>
         </div>
 
@@ -146,18 +167,26 @@ export function ChenbaoMode() {
             className="text-[8px] font-black tracking-widest uppercase mb-1.5"
             style={{ color: 'var(--gray)' }}
           >
-            明日预报
+            未来预报
           </div>
           <div className="flex flex-col gap-1">
-            {forecast.map((f, i) => (
-              <div key={i} className="flex justify-between items-center text-[10px]">
-                <span className="font-bold tracking-wide" style={{ color: 'var(--gray)' }}>
-                  {f.day}
-                </span>
-                <span className="text-[12px]">{f.icon}</span>
-                <span className="font-mono text-[9px]">{f.temp}</span>
-              </div>
-            ))}
+            {forecast.length > 0
+              ? forecast.map((f, i) => (
+                  <div key={i} className="flex justify-between items-center text-[10px]">
+                    <span className="font-bold tracking-wide" style={{ color: 'var(--gray)' }}>
+                      {f.day}
+                    </span>
+                    <span className="text-[12px]">{f.icon}</span>
+                    <span className="font-mono text-[9px]">{f.temp}</span>
+                  </div>
+                ))
+              : [1, 2, 3].map((i) => (
+                  <div key={i} className="flex justify-between items-center text-[10px]">
+                    <span className="font-bold" style={{ color: 'var(--gray)' }}>—</span>
+                    <span>❓</span>
+                    <span className="font-mono text-[9px]">--/--</span>
+                  </div>
+                ))}
           </div>
         </div>
 
