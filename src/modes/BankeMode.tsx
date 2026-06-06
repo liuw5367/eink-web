@@ -8,14 +8,26 @@ export function BankeMode() {
   const { now, time, WD_FULL } = useClock();
   const cfg = useConfigStore((s) => s.cfg);
   const w = useWeatherStore((s) => s.now);
+  const hourly = useWeatherStore((s) => s.hourly);
   const daily = useWeatherStore((s) => s.daily);
+  const air = useWeatherStore((s) => s.air);
 
   const day = now.getDate();
   const lunar = getLunarInfo(now);
   const weekDates = getWeekDates(now);
 
-  // Forecast: skip today, show next 4 days
-  const forecast = daily.slice(1, 5).map((d) => {
+  // Hourly: next 7 hours
+  const hourlyForecast = hourly.slice(0, 7).map((h) => {
+    const dt = new Date(h.fxTime);
+    return {
+      time: `${dt.getHours()}时`,
+      icon: weatherIcon(h.icon),
+      temp: `${h.temp}°`,
+    };
+  });
+
+  // Forecast: skip today, show next 7 days
+  const forecast = daily.slice(1, 8).map((d) => {
     const dt = new Date(d.fxDate);
     const info = getLunarInfo(dt);
     return {
@@ -24,6 +36,8 @@ export function BankeMode() {
       temp: `${d.tempMax}/${d.tempMin}`,
     };
   });
+
+  const today = daily[0];
 
   return (
     <section className="flex flex-col h-full">
@@ -98,45 +112,67 @@ export function BankeMode() {
       </div>
 
       {/* Bottom */}
-      <div className="mt-auto px-3.5 py-3 flex justify-between items-end border-t-2 border-black">
-        <div className="flex gap-3.5">
-          {forecast.length > 0
-            ? forecast.map((f, i) => (
-                <div key={i} className="flex flex-col gap-0.5 items-center">
-                  <span
-                    className="text-[9px] tracking-wide font-bold"
-                    style={{ color: 'var(--gray)' }}
-                  >
-                    {f.day}
+      <div className="mt-auto px-3.5 py-2 border-t-2 border-black flex flex-col gap-2">
+        {/* Row 1: 7-hour forecast */}
+        <div className="flex justify-between">
+          {hourlyForecast.length > 0
+            ? hourlyForecast.map((h, i) => (
+                <div key={i} className="flex flex-col items-center gap-0.5">
+                  <span className="text-[8px]" style={{ color: 'var(--gray)' }}>
+                    {h.time}
                   </span>
-                  <span className="text-[14px]">{f.icon}</span>
-                  <span className="font-mono text-[9px]">{f.temp}</span>
+                  <span className="text-[12px]">{h.icon}</span>
+                  <span className="font-mono text-[8px]">{h.temp}</span>
                 </div>
               ))
-            : [
-                { day: '—', icon: '❓', temp: '--/--' },
-                { day: '—', icon: '❓', temp: '--/--' },
-                { day: '—', icon: '❓', temp: '--/--' },
-              ].map((f, i) => (
-                <div key={i} className="flex flex-col gap-0.5 items-center">
-                  <span
-                    className="text-[9px] tracking-wide font-bold"
-                    style={{ color: 'var(--gray)' }}
-                  >
-                    {f.day}
-                  </span>
-                  <span className="text-[14px]">{f.icon}</span>
-                  <span className="font-mono text-[9px]">{f.temp}</span>
+            : Array.from({ length: 7 }).map((_, i) => (
+                <div key={i} className="flex flex-col items-center gap-0.5">
+                  <span className="text-[8px]" style={{ color: 'var(--gray)' }}>—</span>
+                  <span className="text-[12px]">❓</span>
+                  <span className="font-mono text-[8px]">--°</span>
                 </div>
               ))}
         </div>
-        <div
-          className="text-[11px] tracking-widest text-right leading-relaxed max-w-[160px]"
-          style={{ color: 'var(--light-gray)' }}
-        >
-          万物并育而不相害
-          <br />
-          道并行而不相悖
+
+        {/* Row 2: 7-day forecast */}
+        <div className="flex justify-between">
+          {forecast.length > 0
+            ? forecast.map((f, i) => (
+                <div key={i} className="flex flex-col items-center gap-0.5">
+                  <span className="text-[8px] font-bold" style={{ color: 'var(--gray)' }}>
+                    {f.day}
+                  </span>
+                  <span className="text-[12px]">{f.icon}</span>
+                  <span className="font-mono text-[8px]">{f.temp}</span>
+                </div>
+              ))
+            : Array.from({ length: 7 }).map((_, i) => (
+                <div key={i} className="flex flex-col items-center gap-0.5">
+                  <span className="text-[8px] font-bold" style={{ color: 'var(--gray)' }}>—</span>
+                  <span className="text-[12px]">❓</span>
+                  <span className="font-mono text-[8px]">--/--</span>
+                </div>
+              ))}
+        </div>
+
+        {/* Row 3: indicators left + quote right */}
+        <div className="flex justify-between items-end">
+          <div className="flex flex-wrap gap-x-3 gap-y-0.5 text-[9px]" style={{ color: 'var(--gray)' }}>
+            {w && <span>体感 {w.feelsLike}°</span>}
+            {w && <span>风速 {w.windScale}级</span>}
+            {w && <span>湿度 {w.humidity}%</span>}
+            {air && <span>空气 {air.category}</span>}
+            {today && <span>日出 {today.sunrise}</span>}
+            {today && <span>日落 {today.sunset}</span>}
+          </div>
+          <div
+            className="text-[10px] tracking-widest text-right leading-relaxed"
+            style={{ color: 'var(--light-gray)' }}
+          >
+            万物并育而不相害
+            <br />
+            道并行而不相悖
+          </div>
         </div>
       </div>
     </section>

@@ -10,7 +10,9 @@ export function ChenbaoMode() {
   const { now, time, WD_FULL } = useClock();
   const cfg = useConfigStore((s) => s.cfg);
   const w = useWeatherStore((s) => s.now);
+  const hourly = useWeatherStore((s) => s.hourly);
   const daily = useWeatherStore((s) => s.daily);
+  const air = useWeatherStore((s) => s.air);
 
   const day = now.getDate();
   const lunar = getLunarInfo(now);
@@ -56,8 +58,18 @@ export function ChenbaoMode() {
     calCells.push({ day: cd, other, isToday, isWeekend, lunarStr });
   }
 
-  // Forecast: skip today
-  const forecast = daily.slice(1, 4).map((fd) => {
+  // Hourly: next 7 hours
+  const hourlyForecast = hourly.slice(0, 7).map((h) => {
+    const dt = new Date(h.fxTime);
+    return {
+      time: `${dt.getHours()}时`,
+      icon: weatherIcon(h.icon),
+      temp: `${h.temp}°`,
+    };
+  });
+
+  // Forecast: skip today, show 7 days
+  const forecast = daily.slice(1, 8).map((fd) => {
     const dt = new Date(fd.fxDate);
     return {
       day: WEEKDAY_NAMES[dt.getDay()],
@@ -65,6 +77,8 @@ export function ChenbaoMode() {
       temp: `${fd.tempMax}°/${fd.tempMin}°`,
     };
   });
+
+  const today = daily[0];
 
   return (
     <section
@@ -137,7 +151,7 @@ export function ChenbaoMode() {
       </div>
 
       {/* Sidebar */}
-      <div className="flex flex-col px-2.5 py-2.5 gap-0">
+      <div className="flex flex-col px-2.5 py-2.5 gap-0 overflow-y-auto">
         {/* Weather */}
         <div className="py-2.5 border-b border-gray-200">
           <div
@@ -155,9 +169,44 @@ export function ChenbaoMode() {
             </span>
           </div>
           <div className="text-[10px] leading-relaxed" style={{ color: 'var(--gray)' }}>
+            {w && `体感 ${w.feelsLike}°`}
+            {today && `  ${today.tempMax}°/${today.tempMin}°`}
+            <br />
             {cfg.city} · {w?.text ?? '加载中'}
             <br />
             {w && `湿度 ${w.humidity}% · ${w.windDir} ${w.windScale}级`}
+            <br />
+            {air && `空气 ${air.category}`}
+            {today && `  日出${today.sunrise} 日落${today.sunset}`}
+          </div>
+        </div>
+
+        {/* Hourly Forecast */}
+        <div className="py-2.5 border-b border-gray-200">
+          <div
+            className="text-[8px] font-black tracking-widest uppercase mb-1.5"
+            style={{ color: 'var(--gray)' }}
+          >
+            小时预报
+          </div>
+          <div className="flex flex-col gap-1">
+            {hourlyForecast.length > 0
+              ? hourlyForecast.map((h, i) => (
+                  <div key={i} className="flex justify-between items-center text-[10px]">
+                    <span className="font-bold tracking-wide" style={{ color: 'var(--gray)' }}>
+                      {h.time}
+                    </span>
+                    <span className="text-[12px]">{h.icon}</span>
+                    <span className="font-mono text-[9px]">{h.temp}</span>
+                  </div>
+                ))
+              : [1, 2, 3].map((i) => (
+                  <div key={i} className="flex justify-between items-center text-[10px]">
+                    <span className="font-bold" style={{ color: 'var(--gray)' }}>—</span>
+                    <span>❓</span>
+                    <span className="font-mono text-[9px]">--°</span>
+                  </div>
+                ))}
           </div>
         </div>
 
