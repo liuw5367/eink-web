@@ -84,11 +84,11 @@ export function BottomNav() {
     >
       {/* Left: battery · time · countdown */}
       <div className="flex items-center gap-2 font-bold">
-        <span>🔋 {battery}%</span>
+        <span className="flex items-center">🔋 {battery}%</span>
         <span className="opacity-70">│</span>
         <span className="">{time}</span>
-        <span className="opacity740">│</span>
-        <span className="">↺ {countdown}</span>
+        <span className="opacity-70">│</span>
+        <span className="flex items-center">↺ {countdown}</span>
       </div>
 
       {/* Right: mode icon + settings */}

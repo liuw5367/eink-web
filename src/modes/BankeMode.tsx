@@ -98,7 +98,7 @@ export function BankeMode() {
           const isActive = d.toDateString() === now.toDateString();
           const lun = getLunarShort(d);
           return (
-            <div key={i} className="flex flex-col items-center gap-0.5">
+            <div key={i} className="flex flex-col items-center gap-1">
               <span
                 className="font-bold tracking-wide"
                 style={{ fontSize: "var(--text-base)" }}
@@ -106,7 +106,7 @@ export function BankeMode() {
                 {["日", "一", "二", "三", "四", "五", "六"][d.getDay()]}
               </span>
               <span
-                className={`font-mono font-bold w-[38px] h-[38px] flex items-center justify-center ${
+                className={`font-mono font-bold w-[50px] h-[50px] flex items-center justify-center ${
                   isActive ? "bg-black text-white rounded-sm" : ""
                 }`}
                 style={{ fontSize: "var(--text-lg)" }}
@@ -226,41 +226,43 @@ export function BankeMode() {
 
       <div className="h-[1.5px] bg-black" />
 
-      {/* Row 3: indicators left + quote right */}
+      {/* Row 3: indicators */}
       <div
-        className="flex flex-wrap gap-y-0.5 font-bold"
+        className="flex justify-between font-bold"
         style={{ fontSize: "var(--text-sm)" }}
       >
+        <div />
         {w && (
-          <span className="flex-1 flex justify-center flex-shrink-0">
-            体感 {w.feelsLike}°
-          </span>
-        )}
-        {w && (
-          <span className="flex-1 flex justify-center flex-shrink-0">
-            风速 {w.windScale}级
-          </span>
-        )}
-        {w && (
-          <span className="flex-1 flex justify-center flex-shrink-0">
-            湿度 {w.humidity}%
+          <span className="flex items-center justify-center">
+            🌡️ {w.feelsLike}°
           </span>
         )}
         {air && (
-          <span className="flex-1 flex justify-center flex-shrink-0">
-            空气 {air.category}
+          <span className="flex items-center justify-center">
+            🌫️ {air.category}
+          </span>
+        )}
+        {w && (
+          <span className="flex items-center justify-center">
+            💨 {w.windDir} {w.windScale}级
+          </span>
+        )}
+        {w && (
+          <span className="flex items-center justify-center">
+            💧 {w.humidity}%
           </span>
         )}
         {today && (
-          <span className="flex-1 flex justify-center flex-shrink-0">
-            日出 {today.sunrise}
+          <span className="flex items-center justify-center">
+            🌅 {today.sunrise}
           </span>
         )}
         {today && (
-          <span className="flex-1 flex justify-center flex-shrink-0">
-            日落 {today.sunset}
+          <span className="flex items-center justify-center">
+            🌇 {today.sunset}
           </span>
         )}
+        <div />
       </div>
     </section>
   );

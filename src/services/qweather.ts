@@ -123,9 +123,8 @@ export async function getAirNow(
   lon: string,
   key: string,
 ): Promise<AirNow | null> {
-  const data = await fetchJson<{ now?: AirNow; code: string }>(
+  const data = await fetchJson<{ indexes?: AirNow[] }>(
     `${BASE_URL}/airquality/v1/current/${lat}/${lon}?key=${key}&lang=zh`,
   );
-  if (data?.code !== "200" || !data.now) return null;
-  return data.now;
+  return data?.indexes?.[0] || null;
 }
