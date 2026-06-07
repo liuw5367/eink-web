@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { useConfigStore } from "../hooks/useConfig";
-import { useClock, zp } from "../hooks/useClock";
+import { zp } from "../hooks/useClock";
 import type { Mode } from "../types";
 
 export const MODE_NAMES: Record<Mode, string> = {
@@ -15,50 +15,44 @@ const MODE_ICONS: Record<Mode, string> = {
 
 const ALL_MODES: Mode[] = ["banke", "chenbao"];
 
+function formatInterval(interval: number): string {
+  if (interval === 0) return "手动";
+  if (interval < 60) return `${interval}min`;
+  return `${interval / 60}h`;
+}
+
 export function BottomNav() {
   const cfg = useConfigStore((s) => s.cfg);
   const setMode = useConfigStore((s) => s.setMode);
   const setSettingsOpen = useConfigStore((s) => s.setSettingsOpen);
-  const { time } = useClock();
   const [modePickerOpen, setModePickerOpen] = useState(false);
-  const [battery, setBattery] = useState("--");
-  const [countdown, setCountdown] = useState("");
+  const batteryRef = useRef<HTMLSpanElement>(null);
+  const timeRef = useRef<HTMLSpanElement>(null);
   const pickerRef = useRef<HTMLDivElement>(null);
 
-  // Battery
+  // Battery + time via DOM updates (no re-render)
   useEffect(() => {
-    const poll = () => {
+    const updateTime = () => {
+      if (timeRef.current) {
+        const now = new Date();
+        timeRef.current.textContent = zp(now.getHours()) + ':' + zp(now.getMinutes());
+      }
+    };
+    const updateBattery = () => {
       if (window.Android?.getBatteryLevel) {
-        setBattery(String(window.Android.getBatteryLevel()));
+        if (batteryRef.current) batteryRef.current.textContent = `🔋 ${window.Android.getBatteryLevel()}%`;
       } else if (navigator.getBattery) {
         navigator.getBattery().then((b) => {
-          setBattery(String(Math.round(b.level * 100)));
+          if (batteryRef.current) batteryRef.current.textContent = `🔋 ${Math.round(b.level * 100)}%`;
         });
       }
     };
-    poll();
-    const interval = setInterval(poll, 5 * 60 * 1000);
-    return () => clearInterval(interval);
+    updateTime();
+    updateBattery();
+    const timeInterval = setInterval(updateTime, 60000);
+    const batteryInterval = setInterval(updateBattery, 5 * 60 * 1000);
+    return () => { clearInterval(timeInterval); clearInterval(batteryInterval); };
   }, []);
-
-  // Refresh countdown
-  useEffect(() => {
-    if (cfg.interval === 0) {
-      setCountdown("手动");
-      return;
-    }
-    let remaining = cfg.interval * 60;
-    const tick = () => {
-      remaining--;
-      if (remaining <= 0) remaining = cfg.interval * 60;
-      const m = Math.floor(remaining / 60);
-      const s = remaining % 60;
-      setCountdown(m > 0 ? `${m}min` : `${s}s`);
-    };
-    tick();
-    const interval = setInterval(tick, 1000);
-    return () => clearInterval(interval);
-  }, [cfg.interval]);
 
   // Close picker on outside click
   useEffect(() => {
@@ -82,13 +76,13 @@ export function BottomNav() {
       className="flex items-center justify-between border-t-2 border-black flex-shrink-0 h-[50px] px-3 bg-white font-mono relative"
       style={{ fontSize: "var(--text-sm)" }}
     >
-      {/* Left: battery · time · countdown */}
+      {/* Left: battery · time · interval */}
       <div className="flex items-center gap-2 font-bold">
-        <span className="flex items-center">🔋 {battery}%</span>
+        <span className="flex items-center" ref={batteryRef}>🔋 --%</span>
         <span className="opacity-70">│</span>
-        <span className="">{time}</span>
+        <span ref={timeRef}>--:--</span>
         <span className="opacity-70">│</span>
-        <span className="flex items-center">↺ {countdown}</span>
+        <span className="flex items-center">↺ {formatInterval(cfg.interval)}</span>
       </div>
 
       {/* Right: mode icon + settings */}

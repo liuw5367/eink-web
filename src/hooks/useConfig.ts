@@ -6,6 +6,7 @@ const STORAGE_KEY = 'eink_cfg';
 const DEFAULTS: AppConfig = {
   mode: 'banke',
   interval: 15,
+  weatherInterval: 15,
   topHour: false,
   night: true,
   nightStart: '23:00',

@@ -1,17 +1,20 @@
-import { useClock, zp } from "../hooks/useClock";
+import { zp, WD_FULL } from "../hooks/useClock";
 import { getLunarInfo, getLunarShort, getWeekDates } from "../hooks/useLunar";
 import { useConfigStore } from "../hooks/useConfig";
 import { useWeatherStore } from "../hooks/useWeather";
 import { weatherIcon } from "../utils/weatherIcon";
 
 export function BankeMode() {
-  const { now, time, WD_FULL } = useClock();
   const cfg = useConfigStore((s) => s.cfg);
   const w = useWeatherStore((s) => s.now);
   const hourly = useWeatherStore((s) => s.hourly);
   const daily = useWeatherStore((s) => s.daily);
   const air = useWeatherStore((s) => s.air);
+  // Subscribe to refreshTick so pageRefresh() triggers re-render with fresh time
+  useWeatherStore((s) => s.refreshTick);
 
+  const now = new Date();
+  const time = zp(now.getHours()) + ':' + zp(now.getMinutes());
   const day = now.getDate();
   const lunar = getLunarInfo(now);
   const weekDates = getWeekDates(now);

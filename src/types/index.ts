@@ -1,6 +1,7 @@
 export interface AppConfig {
   mode: Mode;
   interval: number;
+  weatherInterval: number;
   topHour: boolean;
   night: boolean;
   nightStart: string;

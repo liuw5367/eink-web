@@ -10,6 +10,14 @@ const INTERVAL_CHIPS = [
   { value: 0, label: "仅手动" },
 ];
 
+const WEATHER_INTERVAL_CHIPS = [
+  { value: 5, label: "5分钟" },
+  { value: 15, label: "15分钟" },
+  { value: 30, label: "30分钟" },
+  { value: 60, label: "1小时" },
+  { value: 0, label: "关闭" },
+];
+
 const FONT_SIZE_CHIPS = [
   { value: "sm", label: "小号" },
   { value: "md", label: "中号" },
@@ -68,10 +76,10 @@ export function SettingsPage() {
           <>
             <div className="border-b border-gray-200">
               <SectionTitle>刷新策略</SectionTitle>
-              <SettingRow label="刷新间隔" sub="内容自动更新频率">
+              <SettingRow label="页面刷新间隔" sub="屏幕内容更新频率" disabled={cfg.topHour}>
                 <span />
               </SettingRow>
-              <div className="flex flex-wrap gap-1.5 px-3.5 pb-3">
+              <div className={`flex flex-wrap gap-1.5 px-3.5 pb-3 ${cfg.topHour ? "opacity-40 pointer-events-none" : ""}`}>
                 {INTERVAL_CHIPS.map((chip) => (
                   <button
                     key={chip.value}
@@ -87,7 +95,26 @@ export function SettingsPage() {
                   </button>
                 ))}
               </div>
-              <SettingRow label="整点刷新" sub="仅在整点更新内容">
+              <SettingRow label="天气刷新间隔" sub="从 API 拉取天气数据的频率" disabled={cfg.topHour}>
+                <span />
+              </SettingRow>
+              <div className={`flex flex-wrap gap-1.5 px-3.5 pb-3 ${cfg.topHour ? "opacity-40 pointer-events-none" : ""}`}>
+                {WEATHER_INTERVAL_CHIPS.map((chip) => (
+                  <button
+                    key={chip.value}
+                    className={`border-2 border-black px-3 py-1.5 font-bold cursor-pointer ${
+                      cfg.weatherInterval === chip.value
+                        ? "bg-black text-white"
+                        : "bg-white"
+                    }`}
+                    style={{ fontFamily: "'Noto Serif SC', serif", fontSize: "var(--text-sm)" }}
+                    onClick={() => update({ weatherInterval: chip.value })}
+                  >
+                    {chip.label}
+                  </button>
+                ))}
+              </div>
+              <SettingRow label="整点刷新" sub="在整点同时更新数据和页面，忽略上方间隔设置">
                 <Toggle
                   checked={cfg.topHour}
                   onChange={(v) => update({ topHour: v })}

@@ -23,9 +23,12 @@ interface WeatherStore {
   air: AirNow | null;
   loading: boolean;
   lastUpdate: number;
+  refreshTick: number;
 
   /** Resolve city name to locationId, then fetch all weather data */
   refresh: (city: string, apiKey: string) => Promise<void>;
+  /** Trigger a page re-render without fetching new data */
+  pageRefresh: () => void;
 }
 
 export const useWeatherStore = create<WeatherStore>((set, get) => ({
@@ -39,6 +42,9 @@ export const useWeatherStore = create<WeatherStore>((set, get) => ({
   air: null,
   loading: false,
   lastUpdate: 0,
+  refreshTick: 0,
+
+  pageRefresh: () => set((s) => ({ refreshTick: s.refreshTick + 1 })),
 
   refresh: async (city: string, apiKey: string) => {
     if (!apiKey || !city) return;

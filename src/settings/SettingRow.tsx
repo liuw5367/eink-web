@@ -6,6 +6,7 @@ interface SettingRowProps {
   children: ReactNode;
   onClick?: () => void;
   danger?: boolean;
+  disabled?: boolean;
 }
 
 export function SettingRow({
@@ -14,11 +15,12 @@ export function SettingRow({
   children,
   onClick,
   danger,
+  disabled,
 }: SettingRowProps) {
   return (
     <div
-      className={`flex items-center justify-between px-3.5 py-[11px] border-b border-gray-100 gap-3 ${onClick ? "cursor-pointer" : ""}`}
-      onClick={onClick}
+      className={`flex items-center justify-between px-3.5 py-[11px] border-b border-gray-100 gap-3 ${onClick ? "cursor-pointer" : ""} ${disabled ? "opacity-40 pointer-events-none" : ""}`}
+      onClick={disabled ? undefined : onClick}
     >
       <div className="flex-1">
         <div
