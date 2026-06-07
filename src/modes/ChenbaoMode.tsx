@@ -8,15 +8,14 @@ const WEEKDAY_NAMES = ["周日", "周一", "周二", "周三", "周四", "周五
 
 export function ChenbaoMode() {
   const cfg = useConfigStore((s) => s.cfg);
-  const w = useWeatherStore((s) => s.displayNow);
-  const hourly = useWeatherStore((s) => s.displayHourly);
-  const daily = useWeatherStore((s) => s.displayDaily);
-  const air = useWeatherStore((s) => s.displayAir);
-  // Subscribe to refreshTick so pageRefresh() triggers re-render with fresh time
+  const w = useWeatherStore((s) => s.now);
+  const hourly = useWeatherStore((s) => s.hourly);
+  const daily = useWeatherStore((s) => s.daily);
+  const air = useWeatherStore((s) => s.air);
   useWeatherStore((s) => s.refreshTick);
 
   const now = new Date();
-  const time = zp(now.getHours()) + ':' + zp(now.getMinutes());
+  const time = zp(now.getHours()) + ":" + zp(now.getMinutes());
   const day = now.getDate();
   const lunar = getLunarInfo(now);
 
@@ -61,8 +60,8 @@ export function ChenbaoMode() {
     const isWeekend = dow === 0 || dow === 6;
     const cellDate = other
       ? i < firstDay
-        ? new Date(y, m - 1, cd)  // previous month
-        : new Date(y, m + 1, cd)  // next month
+        ? new Date(y, m - 1, cd) // previous month
+        : new Date(y, m + 1, cd) // next month
       : new Date(y, m, cd);
     const lunarStr = getLunarShort(cellDate);
 
@@ -228,17 +227,14 @@ export function ChenbaoMode() {
       >
         {/* Weather */}
         <div className="py-2.5 border-b border-black">
-          <div className="flex justify-center items-center gap-3 mb-1">
-            <span
-              className="leading-none"
-              style={{ fontSize: "var(--text-lg)" }}
-            >
+          <div
+            className="flex items-center gap-3 mb-1"
+            style={{ fontSize: "var(--text-lg)" }}
+          >
+            <span className="leading-none">
               {w ? weatherIcon(w.icon) : "⛅"}
             </span>
-            <span
-              className="font-mono font-bold leading-none"
-              style={{ fontSize: "var(--text-lg)" }}
-            >
+            <span className="font-mono font-bold leading-none mt-1">
               {w?.temp ?? "--"}
             </span>
           </div>
@@ -247,19 +243,15 @@ export function ChenbaoMode() {
             style={{ fontSize: "var(--text-sm)" }}
           >
             {w?.text ?? "加载中"}
-            {today && ` ${today.tempMax}/${today.tempMin}`}
+            {today && `  ${today.tempMax}/${today.tempMin}`}
             <br />
             {w && `🌡️ ${w.feelsLike}°`}
-            <br />
-            {w && `💧 ${w.humidity}%`}
+            {w && ` 💧 ${w.humidity}%`}
             <br />
             {air && `🌫️ ${air.category}`}
+            {w && ` ${w.windDir} ${w.windScale}级`}
             <br />
-            {w && `${w.windDir} ${w.windScale}级`}
-            <br />
-            {today && `🌅 ${today.sunrise}`}
-            <br />
-            {today && `🌇 ${today.sunset}`}
+            {today && `🌅 ${today.sunrise} 🌇 ${today.sunset}`}
           </div>
         </div>
 
@@ -271,7 +263,10 @@ export function ChenbaoMode() {
           <div className="flex flex-col gap-1">
             {hourlyForecast.length > 0
               ? hourlyForecast.map((h, i) => (
-                  <div key={i} className="flex justify-between items-center">
+                  <div
+                    key={i}
+                    className="flex-1 flex justify-between items-center"
+                  >
                     <span className="font-bold tracking-wide">{h.time}</span>
                     <span>{h.icon}</span>
                     <span className="font-mono font-bold">{h.temp}</span>

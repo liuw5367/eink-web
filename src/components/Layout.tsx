@@ -12,7 +12,6 @@ export function Layout({ children }: LayoutProps) {
   const refresh = useWeatherStore((s) => s.refresh);
   const pageRefresh = useWeatherStore((s) => s.pageRefresh);
   const timersRef = useRef<ReturnType<typeof setTimeout>[]>([]);
-  const lastWeatherRef = useRef(0);
   const stoppedRef = useRef(false);
 
   const isNightTime = useCallback(() => {
@@ -30,7 +29,6 @@ export function Layout({ children }: LayoutProps) {
     if (isNightTime()) return;
     if (cfg.apiKey && cfg.city) {
       await refresh(cfg.city, cfg.apiKey);
-      lastWeatherRef.current = Date.now();
     }
   }, [cfg.city, cfg.apiKey, refresh, isNightTime]);
 
@@ -38,19 +36,6 @@ export function Layout({ children }: LayoutProps) {
     if (isNightTime()) return;
     pageRefresh();
   }, [isNightTime, pageRefresh]);
-
-  // Unified refresh: weather first, then page — single screen refresh
-  const doRefresh = useCallback(async (forceWeather = false) => {
-    if (isNightTime()) return;
-    const now = Date.now();
-    const weatherAge = now - lastWeatherRef.current;
-    const weatherDue = forceWeather || weatherAge >= cfg.weatherInterval * 60 * 1000;
-
-    if (weatherDue && cfg.apiKey && cfg.city) {
-      await doWeatherRefresh();
-    }
-    doPageRefresh();
-  }, [isNightTime, cfg.weatherInterval, cfg.apiKey, cfg.city, doWeatherRefresh, doPageRefresh]);
 
   useEffect(() => {
     // Clear previous timers
@@ -68,12 +53,13 @@ export function Layout({ children }: LayoutProps) {
           (60 - now.getSeconds()) * 1000 -
           now.getMilliseconds();
 
+        // Pre-fetch weather 10s before :00
         const preFetchMs = Math.max(msToNextHour - 10_000, 0);
         const t1 = setTimeout(async () => {
           if (stoppedRef.current) return;
-          // Await weather so data is ready before page refresh
           await doWeatherRefresh();
           if (stoppedRef.current) return;
+          // Page refresh at :00
           const t2 = setTimeout(() => {
             doPageRefresh();
             scheduleNext();
@@ -83,18 +69,23 @@ export function Layout({ children }: LayoutProps) {
         timersRef.current.push(t1);
       };
       scheduleNext();
-    } else if (cfg.interval > 0) {
-      // Initial load: weather first, then page — one screen refresh
-      doRefresh(true);
+    } else {
+      // Initial load: fetch weather, then page refresh
+      doWeatherRefresh().then(() => {
+        if (!stoppedRef.current) doPageRefresh();
+      });
 
-      // Single coordinated interval: weather before page
-      const intervalId = setInterval(() => doRefresh(false), cfg.interval * 60 * 1000);
-      return () => clearInterval(intervalId);
-    } else if (cfg.weatherInterval > 0) {
-      // Manual page refresh, but still auto-fetch weather in background
-      doWeatherRefresh();
-      const weatherId = setInterval(doWeatherRefresh, cfg.weatherInterval * 60 * 1000);
-      return () => clearInterval(weatherId);
+      // Weather timer — independent, refreshes page on completion
+      if (cfg.weatherInterval > 0) {
+        const weatherId = setInterval(doWeatherRefresh, cfg.weatherInterval * 60 * 1000);
+        timersRef.current.push(weatherId as unknown as ReturnType<typeof setTimeout>);
+      }
+
+      // Page timer — independent, refreshes page on tick
+      if (cfg.interval > 0) {
+        const pageId = setInterval(doPageRefresh, cfg.interval * 60 * 1000);
+        timersRef.current.push(pageId as unknown as ReturnType<typeof setTimeout>);
+      }
     }
 
     return () => {
@@ -102,7 +93,7 @@ export function Layout({ children }: LayoutProps) {
       timersRef.current.forEach(clearTimeout);
       timersRef.current = [];
     };
-  }, [cfg.interval, cfg.weatherInterval, cfg.topHour, doWeatherRefresh, doPageRefresh, doRefresh]);
+  }, [cfg.interval, cfg.weatherInterval, cfg.topHour, doWeatherRefresh, doPageRefresh]);
 
   return <>{children}</>;
 }
