@@ -1,5 +1,13 @@
 import { Solar } from "lunar-javascript";
 
+/** 冷门民俗节日，不显示在日历上 */
+const FILTERED_FESTIVALS = new Set([
+  "正月晦", "天日", "地日", "天贶节", "天灸日", "中和节",
+  "春社", "秋社", "社日节", "分龙节", "会龙节", "十成节",
+  "五谷母节", "尾牙", "接神日", "隔开日", "驱傩日",
+  "地藏节", "观莲节", "顺星节",
+]);
+
 export interface LunarInfo {
   /** 农历月，如"四月" */
   month: string;
@@ -34,7 +42,7 @@ export function getLunarInfo(date: Date): LunarInfo {
     ganZhi: lunar.getYearInGanZhi(),
     shengXiao: lunar.getYearShengXiao(),
     festivals: lunar.getFestivals(),
-    otherFestivals: lunar.getOtherFestivals(),
+    otherFestivals: lunar.getOtherFestivals().filter(f => !FILTERED_FESTIVALS.has(f)),
     jieQi: lunar.getJieQi(),
     weekDay: solar.getWeek(),
     weekDayChinese: solar.getWeekInChinese(),
@@ -47,7 +55,7 @@ export function getLunarShort(date: Date): string {
 
   // 优先级：节假日 > 节气 > 农历
   const festivals = lunar.getFestivals();
-  const otherFestivals = lunar.getOtherFestivals();
+  const otherFestivals = lunar.getOtherFestivals().filter(f => !FILTERED_FESTIVALS.has(f));
   if (festivals.length > 0) return festivals[0];
   if (otherFestivals.length > 0) return otherFestivals[0];
   const jieQi = lunar.getJieQi();

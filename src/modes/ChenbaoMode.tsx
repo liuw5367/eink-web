@@ -59,7 +59,12 @@ export function ChenbaoMode() {
       now.getMonth() === m &&
       now.getDate() === cd;
     const isWeekend = dow === 0 || dow === 6;
-    const lunarStr = !other ? getLunarShort(new Date(y, m, cd)) : "";
+    const cellDate = other
+      ? i < firstDay
+        ? new Date(y, m - 1, cd)  // previous month
+        : new Date(y, m + 1, cd)  // next month
+      : new Date(y, m, cd);
+    const lunarStr = getLunarShort(cellDate);
 
     calCells.push({ day: cd, other, isToday, isWeekend, lunarStr });
   }
@@ -157,7 +162,7 @@ export function ChenbaoMode() {
                   {cell.day}
                 </span>
                 <span
-                  className="font-semibold mt-px"
+                  className={`font-semibold mt-px ${cell.other ? "text-gray-600" : ""}`}
                   style={{ fontSize: "var(--text-xs)" }}
                 >
                   {cell.lunarStr.slice(0, 2)}
