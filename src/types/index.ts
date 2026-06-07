@@ -5,6 +5,7 @@ export interface AppConfig {
   night: boolean;
   nightStart: string;
   nightEnd: string;
+  nightSkip: boolean;
   fontSize: "sm" | "md" | "lg";
   city: string;
   apiKey: string;
