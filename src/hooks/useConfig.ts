@@ -10,7 +10,7 @@ const DEFAULTS: AppConfig = {
   night: true,
   nightStart: '23:00',
   nightEnd: '06:00',
-  fontSize: 'md',
+  fontSize: 'sm',
   city: import.meta.env.PUBLIC_QWEATHER_CITY || '北京',
   apiKey: import.meta.env.PUBLIC_QWEATHER_KEY || '',
   keepOn: true,

@@ -18,8 +18,7 @@ function App() {
 
   // Font size
   useEffect(() => {
-    const map = { sm: '18px', md: '20px', lg: '24px' };
-    document.documentElement.style.fontSize = map[cfg.fontSize] || '16px';
+    document.documentElement.dataset.fontSize = cfg.fontSize;
   }, [cfg.fontSize]);
 
   // Android bridge: keep screen on

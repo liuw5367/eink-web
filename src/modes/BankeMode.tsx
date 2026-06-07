@@ -43,7 +43,7 @@ export function BankeMode() {
     <section className="flex flex-col h-full">
       {/* Top */}
       <div className="px-3.5 pt-3.5 flex justify-between items-start">
-        <div className="text-[22px] flex flex-col gap-1">
+        <div className="flex flex-col gap-1" style={{ fontSize: "var(--text-lg)" }}>
           <div className=" font-bold tracking-[6px]">
             {WD_FULL[now.getDay()]}
           </div>
@@ -54,13 +54,13 @@ export function BankeMode() {
           <div className="font-mono font-bold tracking-wide">{time}</div>
         </div>
         <div className="border-2 border-black p-2 flex flex-col gap-0.5 items-end">
-          <span className="font-mono text-[38px] font-bold tracking-wide">
+          <span className="font-mono font-bold tracking-wide" style={{ fontSize: "var(--text-xl)" }}>
             {w?.temp ?? "--"}°C
           </span>
-          <span className="text-[14px] font-semibold tracking-wide">
+          <span className="font-semibold tracking-wide" style={{ fontSize: "var(--text-md)" }}>
             {w?.text ?? "加载中"}
           </span>
-          <span className="text-[14px] font-semibold tracking-wide">
+          <span className="font-semibold tracking-wide" style={{ fontSize: "var(--text-md)" }}>
             {cfg.city}
           </span>
         </div>
@@ -79,7 +79,7 @@ export function BankeMode() {
         </div>
         <div className="flex justify-between items-center px-2.5 mt-1.5">
           <div className="flex-1 h-[1.5px] bg-black" />
-          <div className="text-[22px] font-bold tracking-[6px] px-3">
+          <div className="font-bold tracking-[6px] px-3" style={{ fontSize: "var(--text-lg)" }}>
             {now.getFullYear()}年{now.getMonth() + 1}月
           </div>
           <div className="flex-1 h-[1.5px] bg-black" />
@@ -93,17 +93,18 @@ export function BankeMode() {
           const lun = getLunarShort(d);
           return (
             <div key={i} className="flex flex-col items-center gap-0.5">
-              <span className="text-[13px] font-bold tracking-wide">
+              <span className="font-bold tracking-wide" style={{ fontSize: "var(--text-base)" }}>
                 {["日", "一", "二", "三", "四", "五", "六"][d.getDay()]}
               </span>
               <span
-                className={`font-mono text-[22px] font-bold w-[38px] h-[38px] flex items-center justify-center ${
+                className={`font-mono font-bold w-[38px] h-[38px] flex items-center justify-center ${
                   isActive ? "bg-black text-white rounded-sm" : ""
                 }`}
+                style={{ fontSize: "var(--text-lg)" }}
               >
                 {d.getDate()}
               </span>
-              <span className="text-[11px] font-semibold">{lun}</span>
+              <span className="font-semibold" style={{ fontSize: "var(--text-xs)" }}>{lun}</span>
             </div>
           );
         })}
@@ -122,9 +123,9 @@ export function BankeMode() {
                   key={i}
                   className="flex-1 flex justify-center flex-col items-center gap-0.5"
                 >
-                  <span className="text-[14px] font-semibold">{h.time}</span>
-                  <span className="text-[16px]">{h.icon}</span>
-                  <span className="font-mono text-[14px] font-bold">
+                  <span className="font-semibold" style={{ fontSize: "var(--text-md)" }}>{h.time}</span>
+                  <span style={{ fontSize: "var(--text-md)" }}>{h.icon}</span>
+                  <span className="font-mono font-bold" style={{ fontSize: "var(--text-md)" }}>
                     {h.temp}
                   </span>
                 </div>
@@ -134,9 +135,9 @@ export function BankeMode() {
                   key={i}
                   className="flex-1 flex flex-col items-center gap-0.5"
                 >
-                  <span className="text-[14px] font-semibold">—</span>
-                  <span className="text-[16px]">❓</span>
-                  <span className="font-mono text-[14px] font-bold">--°</span>
+                  <span className="font-semibold" style={{ fontSize: "var(--text-md)" }}>—</span>
+                  <span style={{ fontSize: "var(--text-md)" }}>❓</span>
+                  <span className="font-mono font-bold" style={{ fontSize: "var(--text-md)" }}>--°</span>
                 </div>
               ))}
         </div>
@@ -152,9 +153,9 @@ export function BankeMode() {
                   key={i}
                   className="flex-1 flex flex-col items-center gap-0.5"
                 >
-                  <span className="text-[14px] font-bold">{f.day}</span>
-                  <span className="text-[16px]">{f.icon}</span>
-                  <span className="font-mono text-[14px] font-bold">
+                  <span className="font-bold" style={{ fontSize: "var(--text-md)" }}>{f.day}</span>
+                  <span style={{ fontSize: "var(--text-md)" }}>{f.icon}</span>
+                  <span className="font-mono font-bold" style={{ fontSize: "var(--text-md)" }}>
                     {f.temp}
                   </span>
                 </div>
@@ -164,16 +165,16 @@ export function BankeMode() {
                   key={i}
                   className="flex-1 flex flex-col items-center gap-0.5"
                 >
-                  <span className="text-[14px] font-bold">—</span>
-                  <span className="text-[16px]">❓</span>
-                  <span className="font-mono text-[14px] font-bold">--/--</span>
+                  <span className="font-bold" style={{ fontSize: "var(--text-md)" }}>—</span>
+                  <span style={{ fontSize: "var(--text-md)" }}>❓</span>
+                  <span className="font-mono font-bold" style={{ fontSize: "var(--text-md)" }}>--/--</span>
                 </div>
               ))}
         </div>
 
         {/* Row 3: indicators left + quote right */}
         <div className="flex justify-between items-end">
-          <div className="flex flex-wrap gap-x-3 gap-y-0.5 text-[14px] font-semibold">
+          <div className="flex flex-wrap gap-x-3 gap-y-0.5 font-semibold" style={{ fontSize: "var(--text-md)" }}>
             {w && <span>体感 {w.feelsLike}°</span>}
             {w && <span>风速 {w.windScale}级</span>}
             {w && <span>湿度 {w.humidity}%</span>}

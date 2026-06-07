@@ -1,21 +1,27 @@
-import { useState } from 'react';
-import { useConfigStore } from '../hooks/useConfig';
-import { SettingRow, Toggle, Input, TimeInput } from './SettingRow';
+import { useState } from "react";
+import { useConfigStore } from "../hooks/useConfig";
+import { SettingRow, Toggle, Input, TimeInput } from "./SettingRow";
 
 const INTERVAL_CHIPS = [
-  { value: 5, label: '5分钟' },
-  { value: 15, label: '15分钟' },
-  { value: 30, label: '30分钟' },
-  { value: 60, label: '1小时' },
-  { value: 0, label: '仅手动' },
+  { value: 5, label: "5分钟" },
+  { value: 15, label: "15分钟" },
+  { value: 30, label: "30分钟" },
+  { value: 60, label: "1小时" },
+  { value: 0, label: "仅手动" },
 ];
 
-type TabKey = 'refresh' | 'weather' | 'system';
+const FONT_SIZE_CHIPS = [
+  { value: "sm", label: "小号" },
+  { value: "md", label: "中号" },
+  { value: "lg", label: "大号" },
+];
+
+type TabKey = "refresh" | "weather" | "system";
 
 const TABS: { key: TabKey; label: string }[] = [
-  { key: 'refresh', label: '刷新' },
-  { key: 'weather', label: '天气' },
-  { key: 'system', label: '系统' },
+  { key: "refresh", label: "刷新" },
+  { key: "weather", label: "天气" },
+  { key: "system", label: "系统" },
 ];
 
 export function SettingsPage() {
@@ -23,7 +29,7 @@ export function SettingsPage() {
   const update = useConfigStore((s) => s.update);
   const setSettingsOpen = useConfigStore((s) => s.setSettingsOpen);
   const reset = useConfigStore((s) => s.reset);
-  const [tab, setTab] = useState<TabKey>('refresh');
+  const [tab, setTab] = useState<TabKey>("refresh");
 
   return (
     <div className="fixed inset-0 bg-white z-[100] flex flex-col">
@@ -44,7 +50,7 @@ export function SettingsPage() {
           <button
             key={t.key}
             className={`flex-1 py-2.5 text-[14px] font-bold tracking-wide cursor-pointer border-r border-black last:border-r-0 ${
-              tab === t.key ? 'bg-black text-white' : 'bg-white'
+              tab === t.key ? "bg-black text-white" : "bg-white"
             }`}
             onClick={() => setTab(t.key)}
           >
@@ -56,7 +62,7 @@ export function SettingsPage() {
       {/* Body */}
       <div className="flex-1 overflow-y-auto">
         {/* ── 刷新 ── */}
-        {tab === 'refresh' && (
+        {tab === "refresh" && (
           <>
             <div className="border-b border-gray-200">
               <SectionTitle>刷新策略</SectionTitle>
@@ -68,7 +74,9 @@ export function SettingsPage() {
                   <button
                     key={chip.value}
                     className={`border-2 border-black px-3 py-1.5 text-[13px] font-bold cursor-pointer ${
-                      cfg.interval === chip.value ? 'bg-black text-white' : 'bg-white'
+                      cfg.interval === chip.value
+                        ? "bg-black text-white"
+                        : "bg-white"
                     }`}
                     style={{ fontFamily: "'Noto Serif SC', serif" }}
                     onClick={() => update({ interval: chip.value })}
@@ -78,14 +86,20 @@ export function SettingsPage() {
                 ))}
               </div>
               <SettingRow label="整点刷新" sub="仅在整点更新内容">
-                <Toggle checked={cfg.topHour} onChange={(v) => update({ topHour: v })} />
+                <Toggle
+                  checked={cfg.topHour}
+                  onChange={(v) => update({ topHour: v })}
+                />
               </SettingRow>
             </div>
 
             <div className="border-b border-gray-200">
               <SectionTitle>夜间模式</SectionTitle>
               <SettingRow label="夜间跳过刷新" sub="指定时段暂停内容更新">
-                <Toggle checked={cfg.night} onChange={(v) => update({ night: v })} />
+                <Toggle
+                  checked={cfg.night}
+                  onChange={(v) => update({ night: v })}
+                />
               </SettingRow>
               <div
                 className="flex items-center gap-2 px-3.5 py-1 text-[14px]"
@@ -107,7 +121,7 @@ export function SettingsPage() {
         )}
 
         {/* ── 天气 ── */}
-        {tab === 'weather' && (
+        {tab === "weather" && (
           <div className="border-b border-gray-200">
             <SectionTitle>天气设置</SectionTitle>
             <SettingRow label="天气城市">
@@ -128,11 +142,35 @@ export function SettingsPage() {
         )}
 
         {/* ── 系统 ── */}
-        {tab === 'system' && (
+        {tab === "system" && (
           <div className="border-b border-gray-200">
+            <SectionTitle>显示</SectionTitle>
+            <SettingRow label="字体大小" sub="调整页面文字大小">
+              <span />
+            </SettingRow>
+            <div className="flex flex-wrap gap-1.5 px-3.5 pb-3">
+              {FONT_SIZE_CHIPS.map((chip) => (
+                <button
+                  key={chip.value}
+                  className={`border-2 border-black px-3 py-1.5 text-[13px] font-bold cursor-pointer ${
+                    cfg.fontSize === chip.value
+                      ? "bg-black text-white"
+                      : "bg-white"
+                  }`}
+                  style={{ fontFamily: "'Noto Serif SC', serif" }}
+                  onClick={() => update({ fontSize: chip.value as "sm" | "md" | "lg" })}
+                >
+                  {chip.label}
+                </button>
+              ))}
+            </div>
+
             <SectionTitle>系统</SectionTitle>
             <SettingRow label="防止锁屏" sub="保持屏幕常亮（需 APK 支持）">
-              <Toggle checked={cfg.keepOn} onChange={(v) => update({ keepOn: v })} />
+              <Toggle
+                checked={cfg.keepOn}
+                onChange={(v) => update({ keepOn: v })}
+              />
             </SettingRow>
             <SettingRow
               label="立即刷新内容"
@@ -149,7 +187,7 @@ export function SettingsPage() {
               label="恢复默认设置"
               danger
               onClick={() => {
-                if (confirm('确认恢复所有默认设置？')) {
+                if (confirm("确认恢复所有默认设置？")) {
                   reset();
                 }
               }}

@@ -1,5 +1,7 @@
 import { useState, type ReactNode } from 'react';
 
+const AUTH_KEY = 'eink_auth';
+
 interface PasswordGateProps {
   children: ReactNode;
 }
@@ -8,7 +10,9 @@ export function PasswordGate({ children }: PasswordGateProps) {
   const password = import.meta.env.PUBLIC_ACCESS_PASSWORD;
   const [input, setInput] = useState('');
   const [error, setError] = useState(false);
-  const [authenticated, setAuthenticated] = useState(false);
+  const [authenticated, setAuthenticated] = useState(
+    () => !!password && localStorage.getItem(AUTH_KEY) === password,
+  );
 
   // No password configured → skip gate
   if (!password) return <>{children}</>;
@@ -18,6 +22,7 @@ export function PasswordGate({ children }: PasswordGateProps) {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (input === password) {
+      localStorage.setItem(AUTH_KEY, password);
       setAuthenticated(true);
     } else {
       setError(true);

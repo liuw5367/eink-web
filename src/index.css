@@ -11,6 +11,32 @@
     --gray: #000000;
     --light-gray: #000000;
     --border: 2px solid #000;
+
+    /* Font size scale — sm */
+    --text-xs: 16px;
+    --text-sm: 16px;
+    --text-base: 18px;
+    --text-md: 19px;
+    --text-lg: 28px;
+    --text-xl: 46px;
+  }
+
+  [data-font-size="md"] {
+    --text-xs: 18px;
+    --text-sm: 18px;
+    --text-base: 21px;
+    --text-md: 22px;
+    --text-lg: 34px;
+    --text-xl: 54px;
+  }
+
+  [data-font-size="lg"] {
+    --text-xs: 20px;
+    --text-sm: 20px;
+    --text-base: 24px;
+    --text-md: 25px;
+    --text-lg: 38px;
+    --text-xl: 62px;
   }
 
   * {
@@ -51,7 +77,8 @@
 /* ─── Shared widget styles ─── */
 @layer components {
   .widget-label {
-    @apply text-[11px] font-bold tracking-[2px] uppercase mb-1.5;
+    font-size: var(--text-sm);
+    @apply font-bold tracking-[2px] uppercase mb-1.5;
   }
 
   .btn {
