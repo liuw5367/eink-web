@@ -10,7 +10,6 @@ const DEFAULTS: AppConfig = {
   night: true,
   nightStart: '23:00',
   nightEnd: '06:00',
-  nightSkip: true,
   fontSize: 'md',
   city: import.meta.env.PUBLIC_QWEATHER_CITY || '北京',
   apiKey: import.meta.env.PUBLIC_QWEATHER_KEY || '',
@@ -50,18 +49,15 @@ if (!window.Android) {
 interface ConfigStore {
   cfg: AppConfig;
   settingsOpen: boolean;
-  nightActive: boolean;
   update: (partial: Partial<AppConfig>) => void;
   setMode: (mode: Mode) => void;
   setSettingsOpen: (open: boolean) => void;
-  setNightActive: (active: boolean) => void;
   reset: () => void;
 }
 
 export const useConfigStore = create<ConfigStore>((set, get) => ({
   cfg: loadConfig(),
   settingsOpen: false,
-  nightActive: false,
 
   update: (partial) => {
     const newCfg = { ...get().cfg, ...partial };
@@ -76,7 +72,6 @@ export const useConfigStore = create<ConfigStore>((set, get) => ({
   },
 
   setSettingsOpen: (open) => set({ settingsOpen: open }),
-  setNightActive: (active) => set({ nightActive: active }),
 
   reset: () => {
     localStorage.removeItem(STORAGE_KEY);

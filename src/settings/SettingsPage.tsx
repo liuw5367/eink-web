@@ -102,12 +102,6 @@ export function SettingsPage() {
                   onChange={(v) => update({ nightEnd: v })}
                 />
               </div>
-              <SettingRow label="夜间跳过刷新" sub="夜间暂停内容更新">
-                <Toggle
-                  checked={cfg.nightSkip}
-                  onChange={(v) => update({ nightSkip: v })}
-                />
-              </SettingRow>
             </div>
           </>
         )}
