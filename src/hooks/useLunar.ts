@@ -44,6 +44,15 @@ export function getLunarInfo(date: Date): LunarInfo {
 export function getLunarShort(date: Date): string {
   const solar = Solar.fromDate(date);
   const lunar = solar.getLunar();
+
+  // 优先级：节假日 > 节气 > 农历
+  const festivals = lunar.getFestivals();
+  const otherFestivals = lunar.getOtherFestivals();
+  if (festivals.length > 0) return festivals[0];
+  if (otherFestivals.length > 0) return otherFestivals[0];
+  const jieQi = lunar.getJieQi();
+  if (jieQi) return jieQi;
+
   const day = lunar.getDayInChinese();
   // 初一显示月份
   return day === "初一" ? lunar.getMonthInChinese() + "月" : day;

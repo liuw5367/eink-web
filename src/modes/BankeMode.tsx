@@ -49,7 +49,11 @@ export function BankeMode() {
         >
           <div className=" font-bold tracking-[6px]">
             {WD_FULL[now.getDay()]} {lunar.full}
-            {lunar.festivals.length > 0 && ` · ${lunar.festivals.join(" ")}`}
+            {(() => {
+              const parts = [...lunar.festivals, ...lunar.otherFestivals];
+              if (lunar.jieQi) parts.push(lunar.jieQi);
+              return parts.length > 0 ? ` · ${parts.join(" ")}` : "";
+            })()}
           </div>
           <div className="font-mono font-bold tracking-wide">{time}</div>
         </div>
@@ -96,7 +100,7 @@ export function BankeMode() {
       <div className="px-3.5 pt-3 grid grid-cols-7 gap-1">
         {weekDates.map((d, i) => {
           const isActive = d.toDateString() === now.toDateString();
-          const lun = getLunarShort(d);
+          const lun = getLunarShort(d).slice(0, 2);
           return (
             <div key={i} className="flex flex-col items-center gap-1">
               <span

@@ -110,7 +110,11 @@ export function ChenbaoMode() {
             <span className="tracking-widest">{WD_FULL[now.getDay()]}</span>
             <span className="tracking-wide">
               {lunar.full}
-              {lunar.festivals.length > 0 && ` · ${lunar.festivals.join(" ")}`}
+              {(() => {
+                const parts = [...lunar.festivals, ...lunar.otherFestivals];
+                if (lunar.jieQi) parts.push(lunar.jieQi);
+                return parts.length > 0 ? ` · ${parts.join(" ")}` : "";
+              })()}
             </span>
           </div>
         </div>
@@ -140,7 +144,7 @@ export function ChenbaoMode() {
                 <span
                   className={`font-mono font-bold ${
                     cell.isToday
-                      ? "bg-black text-white w-[28px] h-[28px] rounded-full flex items-center justify-center"
+                      ? "bg-black text-white w-[36px] h-[28px] rounded-full flex items-center justify-center"
                       : cell.other
                         ? "text-gray-600"
                         : ""
@@ -153,7 +157,7 @@ export function ChenbaoMode() {
                   className="font-semibold mt-px"
                   style={{ fontSize: "var(--text-xs)" }}
                 >
-                  {cell.lunarStr}
+                  {cell.lunarStr.slice(0, 2)}
                 </span>
               </div>
             ))}
