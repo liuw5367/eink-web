@@ -1,5 +1,5 @@
 const BASE_URL = import.meta.env.PUBLIC_QWEATHER_BASE_URL;
-const GEO_URL = import.meta.env.PUBLIC_QWEATHER_GEO_UR || BASE_URL + "/geo";
+const GEO_URL = import.meta.env.PUBLIC_QWEATHER_GEO_URL || BASE_URL + "/geo";
 
 export interface WeatherNow {
   temp: string;
