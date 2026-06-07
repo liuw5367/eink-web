@@ -1,4 +1,4 @@
-import { Solar } from 'lunar-javascript';
+import { Solar } from "lunar-javascript";
 
 export interface LunarInfo {
   /** 农历月，如"四月" */
@@ -28,9 +28,9 @@ export function getLunarInfo(date: Date): LunarInfo {
   const lunar = solar.getLunar();
 
   return {
-    month: lunar.getMonthInChinese() + '月',
+    month: lunar.getMonthInChinese() + "月",
     day: lunar.getDayInChinese(),
-    full: lunar.getMonthInChinese() + '月' + lunar.getDayInChinese(),
+    full: lunar.getMonthInChinese() + "月" + lunar.getDayInChinese(),
     ganZhi: lunar.getYearInGanZhi(),
     shengXiao: lunar.getYearShengXiao(),
     festivals: lunar.getFestivals(),
@@ -46,15 +46,15 @@ export function getLunarShort(date: Date): string {
   const lunar = solar.getLunar();
   const day = lunar.getDayInChinese();
   // 初一显示月份
-  return day === '初一' ? lunar.getMonthInChinese() + '月' : day;
+  return day === "初一" ? lunar.getMonthInChinese() + "月" : day;
 }
 
 export function getLunarFull(date: Date): string {
   const info = getLunarInfo(date);
-  const parts = [info.ganZhi + '(' + info.shengXiao + '年)', info.full];
-  if (info.festivals.length) parts.push(info.festivals.join(' '));
+  const parts = [info.ganZhi + "(" + info.shengXiao + "年)", info.full];
+  if (info.festivals.length) parts.push(info.festivals.join(" "));
   if (info.jieQi) parts.push(info.jieQi);
-  return parts.join(' ');
+  return parts.join(" ");
 }
 
 export function getWeekDates(date: Date): Date[] {

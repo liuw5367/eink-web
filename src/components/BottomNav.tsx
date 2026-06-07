@@ -78,13 +78,16 @@ export function BottomNav() {
   };
 
   return (
-    <nav className="flex items-center justify-between border-t-2 border-black flex-shrink-0 h-[50px] px-3 bg-white font-mono text-[14px] relative">
+    <nav
+      className="flex items-center justify-between border-t-2 border-black flex-shrink-0 h-[50px] px-3 bg-white font-mono relative"
+      style={{ fontSize: "var(--text-sm)" }}
+    >
       {/* Left: battery · time · countdown */}
-      <div className="flex items-center gap-2">
+      <div className="flex items-center gap-2 font-bold">
         <span>🔋 {battery}%</span>
-        <span className="opacity-40">│</span>
-        <span className="font-bold">{time}</span>
-        <span className="opacity-40">│</span>
+        <span className="opacity-70">│</span>
+        <span className="">{time}</span>
+        <span className="opacity740">│</span>
         <span className="">↺ {countdown}</span>
       </div>
 
