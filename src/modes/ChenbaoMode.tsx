@@ -65,7 +65,7 @@ export function ChenbaoMode() {
   const hourlyForecast = hourly.slice(0, 24).map((h) => {
     const dt = new Date(h.fxTime);
     return {
-      time: `${dt.getHours()}时`,
+      time: `${dt.getHours()}`,
       icon: weatherIcon(h.icon),
       temp: `${h.temp}°`,
     };
@@ -77,7 +77,7 @@ export function ChenbaoMode() {
     return {
       day: WEEKDAY_NAMES[dt.getDay()],
       icon: weatherIcon(fd.iconDay),
-      temp: `${fd.tempMax}°/${fd.tempMin}°`,
+      temp: `${fd.tempMax}/${fd.tempMin}`,
     };
   });
 
@@ -210,57 +210,58 @@ export function ChenbaoMode() {
       </div>
 
       {/* Sidebar */}
-      <div className="flex flex-col px-2.5 py-2.5 gap-0 overflow-y-auto">
+      <div
+        className="flex flex-col px-2.5 py-2.5 gap-0 overflow-y-auto"
+        style={{ minWidth: 120 }}
+      >
         {/* Weather */}
         <div className="py-2.5 border-b border-black">
           <div className="flex justify-center items-center gap-3 mb-1">
             <span
               className="leading-none"
-              style={{ fontSize: "var(--text-xl)" }}
+              style={{ fontSize: "var(--text-lg)" }}
             >
               {w ? weatherIcon(w.icon) : "⛅"}
             </span>
             <span
               className="font-mono font-bold leading-none"
-              style={{ fontSize: "var(--text-xl)" }}
+              style={{ fontSize: "var(--text-lg)" }}
             >
-              {w?.temp ?? "--"}°
+              {w?.temp ?? "--"}
             </span>
           </div>
           <div
             className="font-semibold leading-relaxed"
-            style={{ fontSize: "var(--text-base)" }}
+            style={{ fontSize: "var(--text-sm)" }}
           >
             {w?.text ?? "加载中"}
-            {today && ` · ${today.tempMax}°/${today.tempMin}°`}
+            {today && ` ${today.tempMax}/${today.tempMin}`}
             <br />
-            {w && `🌡️ ${w.feelsLike}° · 💧 ${w.humidity}%`}
+            {w && `🌡️ ${w.feelsLike}°`}
+            <br />
+            {w && `💧 ${w.humidity}%`}
             <br />
             {air && `🌫️ ${air.category}`}
-            {w && ` 💨 ${w.windDir} ${w.windScale}级`}
             <br />
-            {today && `  🌅 ${today.sunrise} 🌇 ${today.sunset}`}
+            {w && `${w.windDir} ${w.windScale}级`}
+            <br />
+            {today && `🌅 ${today.sunrise}`}
+            <br />
+            {today && `🌇 ${today.sunset}`}
           </div>
         </div>
 
         {/* Hourly Forecast */}
-        <div className="py-2.5">
-          <div
-            className="font-black tracking-widest uppercase mb-1.5"
-            style={{ fontSize: "var(--text-sm)" }}
-          >
+        <div className="py-2.5" style={{ fontSize: "var(--text-sm)" }}>
+          <div className="font-black tracking-widest uppercase mb-1.5">
             小时预报
           </div>
           <div className="flex flex-col gap-1">
             {hourlyForecast.length > 0
               ? hourlyForecast.map((h, i) => (
-                  <div
-                    key={i}
-                    className="flex justify-between items-center"
-                    style={{ fontSize: "var(--text-base)" }}
-                  >
+                  <div key={i} className="flex justify-between items-center">
                     <span className="font-bold tracking-wide">{h.time}</span>
-                    <span style={{ fontSize: "var(--text-md)" }}>{h.icon}</span>
+                    <span>{h.icon}</span>
                     <span className="font-mono font-bold">{h.temp}</span>
                   </div>
                 ))
