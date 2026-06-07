@@ -8,10 +8,10 @@ const WEEKDAY_NAMES = ["周日", "周一", "周二", "周三", "周四", "周五
 
 export function ChenbaoMode() {
   const cfg = useConfigStore((s) => s.cfg);
-  const w = useWeatherStore((s) => s.now);
-  const hourly = useWeatherStore((s) => s.hourly);
-  const daily = useWeatherStore((s) => s.daily);
-  const air = useWeatherStore((s) => s.air);
+  const w = useWeatherStore((s) => s.displayNow);
+  const hourly = useWeatherStore((s) => s.displayHourly);
+  const daily = useWeatherStore((s) => s.displayDaily);
+  const air = useWeatherStore((s) => s.displayAir);
   // Subscribe to refreshTick so pageRefresh() triggers re-render with fresh time
   useWeatherStore((s) => s.refreshTick);
 

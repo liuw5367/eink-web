@@ -28,6 +28,11 @@ npm run build
 - **版刻** — 日历风格日期展示
 - **晨报** — 日历 + 天气
 
+## 文档
+
+- [刷新机制说明](docs/refresh.md) — 屏幕刷新与天气刷新的调度策略
+- [设计规范](DESIGN.md) — E-Ink 显示规范
+
 ## 原型
 
 原始原型文件位于 `docs/prototype.html`。
