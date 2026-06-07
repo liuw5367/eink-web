@@ -1,5 +1,6 @@
 import { BottomNav } from './components/BottomNav';
 import { Layout } from './components/Layout';
+import { PasswordGate } from './components/PasswordGate';
 import { BankeMode } from './modes/BankeMode';
 import { ChenbaoMode } from './modes/ChenbaoMode';
 import { SettingsPage } from './settings/SettingsPage';
@@ -31,13 +32,15 @@ function App() {
   const ActiveMode = MODE_COMPONENTS[cfg.mode];
 
   return (
-    <Layout>
-      <div className="flex-1 overflow-hidden relative">
-        <ActiveMode />
-      </div>
-      <BottomNav />
-      {settingsOpen && <SettingsPage />}
-    </Layout>
+    <PasswordGate>
+      <Layout>
+        <div className="flex-1 overflow-hidden relative">
+          <ActiveMode />
+        </div>
+        <BottomNav />
+        {settingsOpen && <SettingsPage />}
+      </Layout>
+    </PasswordGate>
   );
 }
 

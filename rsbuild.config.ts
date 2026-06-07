@@ -15,6 +15,7 @@ export default defineConfig({
       'import.meta.env.PUBLIC_QWEATHER_CITY': JSON.stringify(parsed.PUBLIC_QWEATHER_CITY || '北京'),
       'import.meta.env.PUBLIC_QWEATHER_BASE_URL': JSON.stringify(parsed.PUBLIC_QWEATHER_BASE_URL || 'https://devapi.qweather.com'),
       'import.meta.env.PUBLIC_QWEATHER_GEO_URL': JSON.stringify(parsed.PUBLIC_QWEATHER_GEO_URL || 'https://geoapi.qweather.com'),
+      'import.meta.env.PUBLIC_ACCESS_PASSWORD': JSON.stringify(parsed.PUBLIC_ACCESS_PASSWORD || ''),
     },
   },
 });
