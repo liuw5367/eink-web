@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react';
+import type { ReactNode } from "react";
 
 interface SettingRowProps {
   label: string;
@@ -8,20 +8,27 @@ interface SettingRowProps {
   danger?: boolean;
 }
 
-export function SettingRow({ label, sub, children, onClick, danger }: SettingRowProps) {
+export function SettingRow({
+  label,
+  sub,
+  children,
+  onClick,
+  danger,
+}: SettingRowProps) {
   return (
     <div
-      className={`flex items-center justify-between px-3.5 py-[11px] border-b border-gray-100 gap-3 ${onClick ? 'cursor-pointer' : ''}`}
+      className={`flex items-center justify-between px-3.5 py-[11px] border-b border-gray-100 gap-3 ${onClick ? "cursor-pointer" : ""}`}
       onClick={onClick}
     >
       <div className="flex-1">
         <div
-          className={`text-[15px] font-semibold ${danger ? 'text-red-600' : ''}`}
+          className={`font-semibold ${danger ? "text-red-600" : ""}`}
+          style={{ fontSize: "var(--text-base)" }}
         >
           {label}
         </div>
         {sub && (
-          <div className="text-[12px] mt-0.5">
+          <div className="mt-0.5" style={{ fontSize: "var(--text-xs)" }}>
             {sub}
           </div>
         )}
@@ -58,8 +65,11 @@ interface SelectProps {
 export function Select({ value, options, onChange }: SelectProps) {
   return (
     <select
-      className="border-2 border-black bg-white px-2 py-[5px] text-[14px] font-semibold cursor-pointer outline-none min-w-[90px]"
-      style={{ fontFamily: "'Noto Serif SC', serif" }}
+      className="border-2 border-black bg-white px-2 py-[5px] font-semibold cursor-pointer outline-none min-w-[90px]"
+      style={{
+        fontFamily: "'Noto Serif SC', serif",
+        fontSize: "var(--text-sm)",
+      }}
       value={value}
       onChange={(e) => onChange(e.target.value)}
       onClick={(e) => e.stopPropagation()}
@@ -82,8 +92,11 @@ interface InputProps {
 export function Input({ value, placeholder, onChange }: InputProps) {
   return (
     <input
-      className="border-2 border-black px-2 py-[5px] text-[14px] outline-none min-w-[100px]"
-      style={{ fontFamily: "'Noto Serif SC', serif" }}
+      className="border-2 border-black px-2 py-[5px] outline-none min-w-[100px]"
+      style={{
+        fontFamily: "'Noto Serif SC', serif",
+        fontSize: "var(--text-sm)",
+      }}
       value={value}
       placeholder={placeholder}
       onChange={(e) => onChange(e.target.value)}
@@ -101,7 +114,8 @@ export function TimeInput({ value, onChange }: TimeInputProps) {
   return (
     <input
       type="time"
-      className="border-2 border-black px-2 py-[5px] text-[14px] font-mono w-[86px] outline-none text-center"
+      className="border-2 border-black px-2 py-[5px] font-mono w-[120px] outline-none text-center"
+      style={{ fontSize: "var(--text-sm)" }}
       value={value}
       onChange={(e) => onChange(e.target.value)}
       onClick={(e) => e.stopPropagation()}

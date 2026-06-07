@@ -33,7 +33,7 @@ export function PasswordGate({ children }: PasswordGateProps) {
   return (
     <div className="fixed inset-0 bg-white flex items-center justify-center z-50">
       <form onSubmit={handleSubmit} className="w-64 flex flex-col items-center gap-4">
-        <h1 className="text-2xl font-bold">请输入密码</h1>
+        <h1 className="font-bold" style={{ fontSize: "var(--text-lg)" }}>请输入密码</h1>
         <input
           type="password"
           value={input}
@@ -41,14 +41,16 @@ export function PasswordGate({ children }: PasswordGateProps) {
             setInput(e.target.value);
             setError(false);
           }}
-          className="w-full border-2 border-black px-3 py-2 text-center text-lg bg-white outline-none"
+          className="w-full border-2 border-black px-3 py-2 text-center bg-white outline-none"
+          style={{ fontSize: "var(--text-base)" }}
           autoFocus
           placeholder="访问密码"
         />
-        {error && <p className="text-sm font-bold">密码错误，请重试</p>}
+        {error && <p className="font-bold" style={{ fontSize: "var(--text-sm)" }}>密码错误，请重试</p>}
         <button
           type="submit"
-          className="w-full border-2 border-black bg-black text-white py-2 text-lg font-bold active:bg-white active:text-black"
+          className="w-full border-2 border-black bg-black text-white py-2 font-bold active:bg-white active:text-black"
+          style={{ fontSize: "var(--text-base)" }}
         >
           进入
         </button>

@@ -56,13 +56,12 @@ export function BankeMode() {
         <div className="border-2 border-black p-2 flex flex-col gap-0.5 items-end">
           <span
             className="font-mono font-bold tracking-wide"
-            style={{ fontSize: "var(--text-xl)" }}
+            style={{ fontSize: "var(--text-xl)", lineHeight: "var(--text-xl)" }}
           >
             {w?.temp ?? "--"}°C
           </span>
           <span
-            className="font-bold
- tracking-wide"
+            className="font-bold tracking-wide"
             style={{ fontSize: "var(--text-md)" }}
           >
             {w?.text ?? "加载中"} {cfg.city}
@@ -127,143 +126,141 @@ export function BankeMode() {
       </div>
 
       <div className="flex-1" />
-      <div className="mx-6 h-[1.5px] bg-black" />
+      <div className="mx-6 my-2 h-[1.5px] bg-black" />
 
-      {/* Bottom */}
-      <div className="px-3.5 py-2 flex flex-col gap-2">
-        {/* Row 1: 7-hour forecast */}
-        <div className="flex justify-between">
-          {hourlyForecast.length > 0
-            ? hourlyForecast.map((h, i) => (
-                <div
-                  key={i}
-                  className="flex-1 flex justify-center flex-col items-center gap-0.5"
-                >
-                  <span
-                    className="font-bold
+      {/* Row 1: 7-hour forecast */}
+      <div className="mx-3.5 flex justify-between">
+        {hourlyForecast.length > 0
+          ? hourlyForecast.map((h, i) => (
+              <div
+                key={i}
+                className="flex-1 flex justify-center flex-col items-center gap-0.5"
+              >
+                <span
+                  className="font-bold
 "
-                    style={{ fontSize: "var(--text-md)" }}
-                  >
-                    {h.time}
-                  </span>
-                  <span style={{ fontSize: "var(--text-md)" }}>{h.icon}</span>
-                  <span
-                    className="font-mono font-bold"
-                    style={{ fontSize: "var(--text-md)" }}
-                  >
-                    {h.temp}
-                  </span>
-                </div>
-              ))
-            : Array.from({ length: 7 }).map((_, i) => (
-                <div
-                  key={i}
-                  className="flex-1 flex flex-col items-center gap-0.5"
+                  style={{ fontSize: "var(--text-md)" }}
                 >
-                  <span
-                    className="font-bold
+                  {h.time}
+                </span>
+                <span style={{ fontSize: "var(--text-md)" }}>{h.icon}</span>
+                <span
+                  className="font-mono font-bold"
+                  style={{ fontSize: "var(--text-md)" }}
+                >
+                  {h.temp}
+                </span>
+              </div>
+            ))
+          : Array.from({ length: 7 }).map((_, i) => (
+              <div
+                key={i}
+                className="flex-1 flex flex-col items-center gap-0.5"
+              >
+                <span
+                  className="font-bold
 "
-                    style={{ fontSize: "var(--text-md)" }}
-                  >
-                    —
-                  </span>
-                  <span style={{ fontSize: "var(--text-md)" }}>❓</span>
-                  <span
-                    className="font-mono font-bold"
-                    style={{ fontSize: "var(--text-md)" }}
-                  >
-                    --°
-                  </span>
-                </div>
-              ))}
-        </div>
-
-        <div className="flex-1" />
-        <div className="mx-3.5 h-[1.5px] bg-black" />
-
-        {/* Row 2: 7-day forecast */}
-        <div className="flex justify-between">
-          {forecast.length > 0
-            ? forecast.map((f, i) => (
-                <div
-                  key={i}
-                  className="flex-1 flex flex-col items-center gap-0.5"
+                  style={{ fontSize: "var(--text-md)" }}
                 >
-                  <span
-                    className="font-bold"
-                    style={{ fontSize: "var(--text-md)" }}
-                  >
-                    {f.day}
-                  </span>
-                  <span style={{ fontSize: "var(--text-md)" }}>{f.icon}</span>
-                  <span
-                    className="font-mono font-bold"
-                    style={{ fontSize: "var(--text-md)" }}
-                  >
-                    {f.temp}
-                  </span>
-                </div>
-              ))
-            : Array.from({ length: 7 }).map((_, i) => (
-                <div
-                  key={i}
-                  className="flex-1 flex flex-col items-center gap-0.5"
+                  —
+                </span>
+                <span style={{ fontSize: "var(--text-md)" }}>❓</span>
+                <span
+                  className="font-mono font-bold"
+                  style={{ fontSize: "var(--text-md)" }}
                 >
-                  <span
-                    className="font-bold"
-                    style={{ fontSize: "var(--text-md)" }}
-                  >
-                    —
-                  </span>
-                  <span style={{ fontSize: "var(--text-md)" }}>❓</span>
-                  <span
-                    className="font-mono font-bold"
-                    style={{ fontSize: "var(--text-md)" }}
-                  >
-                    --/--
-                  </span>
-                </div>
-              ))}
-        </div>
+                  --°
+                </span>
+              </div>
+            ))}
+      </div>
 
-        <div className="mx-3.5 h-[1.5px] bg-black" />
+      <div className="mx-6 my-2 h-[1.5px] bg-black" />
 
-        {/* Row 3: indicators left + quote right */}
-        <div
-          className="flex flex-wrap gap-y-0.5 font-bold"
-          style={{ fontSize: "var(--text-sm)" }}
-        >
-          {w && (
-            <span className="flex-1 flex justify-center flex-shrink-0">
-              体感 {w.feelsLike}°
-            </span>
-          )}
-          {w && (
-            <span className="flex-1 flex justify-center flex-shrink-0">
-              风速 {w.windScale}级
-            </span>
-          )}
-          {w && (
-            <span className="flex-1 flex justify-center flex-shrink-0">
-              湿度 {w.humidity}%
-            </span>
-          )}
-          {air && (
-            <span className="flex-1 flex justify-center flex-shrink-0">
-              空气 {air.category}
-            </span>
-          )}
-          {today && (
-            <span className="flex-1 flex justify-center flex-shrink-0">
-              日出 {today.sunrise}
-            </span>
-          )}
-          {today && (
-            <span className="flex-1 flex justify-center flex-shrink-0">
-              日落 {today.sunset}
-            </span>
-          )}
-        </div>
+      {/* Row 2: 7-day forecast */}
+      <div className="mx-3.5  mt-2 flex justify-between">
+        {forecast.length > 0
+          ? forecast.map((f, i) => (
+              <div
+                key={i}
+                className="flex-1 flex flex-col items-center gap-0.5"
+              >
+                <span
+                  className="font-bold"
+                  style={{ fontSize: "var(--text-md)" }}
+                >
+                  {f.day}
+                </span>
+                <span style={{ fontSize: "var(--text-md)" }}>{f.icon}</span>
+                <span
+                  className="font-mono font-bold"
+                  style={{ fontSize: "var(--text-md)" }}
+                >
+                  {f.temp}
+                </span>
+              </div>
+            ))
+          : Array.from({ length: 7 }).map((_, i) => (
+              <div
+                key={i}
+                className="flex-1 flex flex-col items-center gap-0.5"
+              >
+                <span
+                  className="font-bold"
+                  style={{ fontSize: "var(--text-md)" }}
+                >
+                  —
+                </span>
+                <span style={{ fontSize: "var(--text-md)" }}>❓</span>
+                <span
+                  className="font-mono font-bold"
+                  style={{ fontSize: "var(--text-md)" }}
+                >
+                  --/--
+                </span>
+              </div>
+            ))}
+      </div>
+
+      <div className="flex-1" />
+
+      <div className="h-[1.5px] bg-black" />
+
+      {/* Row 3: indicators left + quote right */}
+      <div
+        className="flex flex-wrap gap-y-0.5 font-bold"
+        style={{ fontSize: "var(--text-sm)" }}
+      >
+        {w && (
+          <span className="flex-1 flex justify-center flex-shrink-0">
+            体感 {w.feelsLike}°
+          </span>
+        )}
+        {w && (
+          <span className="flex-1 flex justify-center flex-shrink-0">
+            风速 {w.windScale}级
+          </span>
+        )}
+        {w && (
+          <span className="flex-1 flex justify-center flex-shrink-0">
+            湿度 {w.humidity}%
+          </span>
+        )}
+        {air && (
+          <span className="flex-1 flex justify-center flex-shrink-0">
+            空气 {air.category}
+          </span>
+        )}
+        {today && (
+          <span className="flex-1 flex justify-center flex-shrink-0">
+            日出 {today.sunrise}
+          </span>
+        )}
+        {today && (
+          <span className="flex-1 flex justify-center flex-shrink-0">
+            日落 {today.sunset}
+          </span>
+        )}
       </div>
     </section>
   );

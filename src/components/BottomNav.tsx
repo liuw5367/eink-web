@@ -9,7 +9,7 @@ export const MODE_NAMES: Record<Mode, string> = {
 };
 
 const MODE_ICONS: Record<Mode, string> = {
-  banke: "⬛",
+  banke: "🕐",
   chenbao: "📰",
 };
 
@@ -96,7 +96,8 @@ export function BottomNav() {
         {/* Mode picker */}
         <div className="relative" ref={pickerRef}>
           <button
-            className="cursor-pointer text-[20px] leading-none p-1"
+            className="cursor-pointer leading-none p-1"
+            style={{ fontSize: "var(--text-base)" }}
             onClick={() => setModePickerOpen(!modePickerOpen)}
             title="切换模式"
           >
@@ -109,14 +110,17 @@ export function BottomNav() {
               {ALL_MODES.map((mode) => (
                 <button
                   key={mode}
-                  className={`w-full flex items-center gap-2 px-3 py-2.5 text-left text-[13px] font-bold cursor-pointer border-b border-gray-200 last:border-0 ${
+                  className={`w-full flex items-center gap-2 px-3 py-2.5 text-left font-bold cursor-pointer border-b border-gray-200 last:border-0 ${
                     cfg.mode === mode
                       ? "bg-black text-white"
                       : "hover:bg-gray-100"
                   }`}
+                  style={{ fontSize: "var(--text-sm)" }}
                   onClick={() => handleModeSelect(mode)}
                 >
-                  <span className="text-[16px]">{MODE_ICONS[mode]}</span>
+                  <span style={{ fontSize: "var(--text-base)" }}>
+                    {MODE_ICONS[mode]}
+                  </span>
                   <span>{MODE_NAMES[mode]}</span>
                 </button>
               ))}
@@ -126,7 +130,8 @@ export function BottomNav() {
 
         {/* Settings */}
         <button
-          className="cursor-pointer text-[20px] leading-none p-1"
+          className="cursor-pointer leading-none p-1"
+          style={{ fontSize: "var(--text-base)" }}
           onClick={() => setSettingsOpen(true)}
           title="设置"
         >

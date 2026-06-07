@@ -35,9 +35,10 @@ export function SettingsPage() {
     <div className="fixed inset-0 bg-white z-[100] flex flex-col">
       {/* Header */}
       <div className="flex items-center justify-between px-3.5 py-[11px] border-b-2 border-black flex-shrink-0">
-        <div className="text-[22px] font-black tracking-wide">⚙ 设置</div>
+        <div className="font-black tracking-wide" style={{ fontSize: "var(--text-lg)" }}>⚙ 设置</div>
         <button
-          className="text-[13px] font-bold cursor-pointer px-2.5 py-[5px] border-2 border-black tracking-wide"
+          className="font-bold cursor-pointer px-2.5 py-[5px] border-2 border-black tracking-wide"
+          style={{ fontSize: "var(--text-sm)" }}
           onClick={() => setSettingsOpen(false)}
         >
           ✕ 关闭
@@ -49,9 +50,10 @@ export function SettingsPage() {
         {TABS.map((t) => (
           <button
             key={t.key}
-            className={`flex-1 py-2.5 text-[14px] font-bold tracking-wide cursor-pointer border-r border-black last:border-r-0 ${
+            className={`flex-1 py-2.5 font-bold tracking-wide cursor-pointer border-r border-black last:border-r-0 ${
               tab === t.key ? "bg-black text-white" : "bg-white"
             }`}
+            style={{ fontSize: "var(--text-sm)" }}
             onClick={() => setTab(t.key)}
           >
             {t.label}
@@ -73,12 +75,12 @@ export function SettingsPage() {
                 {INTERVAL_CHIPS.map((chip) => (
                   <button
                     key={chip.value}
-                    className={`border-2 border-black px-3 py-1.5 text-[13px] font-bold cursor-pointer ${
+                    className={`border-2 border-black px-3 py-1.5 font-bold cursor-pointer ${
                       cfg.interval === chip.value
                         ? "bg-black text-white"
                         : "bg-white"
                     }`}
-                    style={{ fontFamily: "'Noto Serif SC', serif" }}
+                    style={{ fontFamily: "'Noto Serif SC', serif", fontSize: "var(--text-sm)" }}
                     onClick={() => update({ interval: chip.value })}
                   >
                     {chip.label}
@@ -102,15 +104,15 @@ export function SettingsPage() {
                 />
               </SettingRow>
               <div
-                className="flex items-center gap-2 px-3.5 py-1 text-[14px]"
+                className="flex items-center gap-2 px-3.5 py-1"
                 style={{ opacity: cfg.night ? 1 : 0.4 }}
               >
-                <span className="text-[12px] font-semibold">时段</span>
+                <span className="font-semibold" style={{ fontSize: "var(--text-xs)" }}>时段</span>
                 <TimeInput
                   value={cfg.nightStart}
                   onChange={(v) => update({ nightStart: v })}
                 />
-                <span className="text-[12px]">至</span>
+                <span style={{ fontSize: "var(--text-xs)" }}>至</span>
                 <TimeInput
                   value={cfg.nightEnd}
                   onChange={(v) => update({ nightEnd: v })}
@@ -152,12 +154,12 @@ export function SettingsPage() {
               {FONT_SIZE_CHIPS.map((chip) => (
                 <button
                   key={chip.value}
-                  className={`border-2 border-black px-3 py-1.5 text-[13px] font-bold cursor-pointer ${
+                  className={`border-2 border-black px-3 py-1.5 font-bold cursor-pointer ${
                     cfg.fontSize === chip.value
                       ? "bg-black text-white"
                       : "bg-white"
                   }`}
-                  style={{ fontFamily: "'Noto Serif SC', serif" }}
+                  style={{ fontFamily: "'Noto Serif SC', serif", fontSize: "var(--text-sm)" }}
                   onClick={() => update({ fontSize: chip.value as "sm" | "md" | "lg" })}
                 >
                   {chip.label}
@@ -179,7 +181,7 @@ export function SettingsPage() {
                 setSettingsOpen(false);
               }}
             >
-              <span className="text-[13px] font-bold cursor-pointer">
+              <span className="font-bold cursor-pointer" style={{ fontSize: "var(--text-sm)" }}>
                 ↺ 刷新
               </span>
             </SettingRow>
@@ -192,7 +194,7 @@ export function SettingsPage() {
                 }
               }}
             >
-              <span className="text-[13px] font-bold text-red-600 cursor-pointer">
+              <span className="font-bold text-red-600 cursor-pointer" style={{ fontSize: "var(--text-sm)" }}>
                 重置
               </span>
             </SettingRow>
@@ -200,7 +202,7 @@ export function SettingsPage() {
         )}
 
         {/* Footer */}
-        <div className="px-3.5 py-4 text-center text-[12px] leading-relaxed">
+        <div className="px-3.5 py-4 text-center leading-relaxed" style={{ fontSize: "var(--text-xs)" }}>
           EInk Panel v1.0 · 掌阅 Neo3 专版
           <br />
           <span>设置自动保存到本地</span>
@@ -212,7 +214,7 @@ export function SettingsPage() {
 
 function SectionTitle({ children }: { children: React.ReactNode }) {
   return (
-    <div className="text-[10px] font-black tracking-[2.5px] px-3.5 pt-2.5 pb-1 uppercase">
+    <div className="font-black tracking-[2.5px] px-3.5 pt-2.5 pb-1 uppercase" style={{ fontSize: "var(--text-xs)" }}>
       {children}
     </div>
   );
