@@ -13,7 +13,7 @@ export function Layout({ children }: LayoutProps) {
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   const isNightTime = useCallback(() => {
-    if (!cfg.night || !cfg.nightSkip) return false;
+    if (!cfg.night) return false;
     const now = new Date();
     const cur = now.getHours() * 60 + now.getMinutes();
     const [sh, sm] = cfg.nightStart.split(':').map(Number);
@@ -21,7 +21,7 @@ export function Layout({ children }: LayoutProps) {
     const st = sh * 60 + sm;
     const en = eh * 60 + em;
     return st > en ? cur >= st || cur < en : cur >= st && cur < en;
-  }, [cfg.night, cfg.nightSkip, cfg.nightStart, cfg.nightEnd]);
+  }, [cfg.night, cfg.nightStart, cfg.nightEnd]);
 
   const doRefresh = useCallback(() => {
     if (isNightTime()) return;
